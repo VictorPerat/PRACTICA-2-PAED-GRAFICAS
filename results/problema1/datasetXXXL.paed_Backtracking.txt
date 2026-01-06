@@ -1,4 +1,3 @@
-=== datasetXXXL.paed | Backtracking | Problema 1 ===
-Missions al dataset (n): 131072
-
-NOTA: Backtracking omès (n > 30) per evitar temps d'execució inassumibles.
+=== Resultado Backtracking | datasetXXXL.paed | Problema 1 (Maximizar valor) ===
+NOTA: Backtracking omitido por tamaño del dataset (n > 30).
+Se genera este fichero para dejar constancia del motivo.

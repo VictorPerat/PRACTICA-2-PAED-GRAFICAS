@@ -1,10 +1,9 @@
-=== datasetXXXL.paed | Greedy | Problema 1 ===
-Missions al dataset (n): 131072
-Valor total: 263411,50
-Temps total (min): 4982
-Missions seleccionades: 36
+=== Resultado Greedy | datasetXXXL.paed | Problema 1 (Maximizar valor) ===
+Valor total: 263411.50
+Tiempo total (min): 4982
+Número de misiones seleccionadas: 36
 
-Llista de missions seleccionades:
+Misiones seleccionadas (orden de la solución):
 Destrueix els traïdors de Dignissimos bury | Asig: Electrònica | Data: 2025-11-23 | Temps: 34 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 1700,00 | Ratio: 50,00 | XY: (777,960)
 Assalta els conjuradors de Dolorem en terres glaçades i inhòspites | Asig: XAL | Data: 2025-09-27 | Temps: 225 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 11250,00 | Ratio: 50,00 | XY: (418,846)
 Captura el monestir de koalaside | Asig: Estadística | Data: 2025-09-02 | Temps: 137 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 6850,00 | Ratio: 50,00 | XY: (417,30)

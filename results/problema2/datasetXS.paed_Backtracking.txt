@@ -1,9 +1,11 @@
-=== datasetXS.paed | Backtracking | Problema 2 ===
-Missions al dataset (n): 10
-Nombre de setmanes: 2
-Temps total (min): 2208
+=== Resultado Backtracking | datasetXS.paed | Problema 2 (Minimizar semanas) ===
+Número de semanas: 2
+Tiempo total (min): 2208
+Número total de misiones planificadas: 10
 
-Setmana 1 (Temps: 1165 min | Comunes: 1)
+Detalle por semanas:
+
+Semana 1 (Tiempo: 1165 min | Comunes: 1 | Misiones: 6)
  - Escapa el cercle màgic de Fenheim al cor d’un bosc encantat | Asig: Business | Data: 2026-01-05 | Temps: 274 | Dif: 1 | Prog: 39 | Pes: #FF8000 | Val: 835,70 | Ratio: 3,05 | XY: (643,147)
  - Destrueix els dimonis de mallardside | Asig: IO | Data: 2026-06-15 | Temps: 241 | Dif: 6 | Prog: 62 | Pes: #FF8000 | Val: 2747,40 | Ratio: 11,40 | XY: (571,946)
  - Afronta el mal el castell de beeton | Asig: DIU | Data: 2025-09-16 | Temps: 188 | Dif: 9 | Prog: 2 | Pes: #FF8000 | Val: 8290,80 | Ratio: 44,10 | XY: (800,85)
@@ -11,9 +13,8 @@ Setmana 1 (Temps: 1165 min | Comunes: 1)
  - Captura el monestir de Drakthas | Asig: ASO | Data: 2026-06-25 | Temps: 163 | Dif: 6 | Prog: 76 | Pes: #FF8000 | Val: 1173,60 | Ratio: 7,20 | XY: (746,31)
  - Recupera l'artefacte el portal de cattleburgh | Asig: SO | Data: 2025-10-16 | Temps: 120 | Dif: 10 | Prog: 51 | Pes: #4FD945 | Val: 588,00 | Ratio: 4,90 | XY: (290,335)
 
-Setmana 2 (Temps: 1043 min | Comunes: 2)
+Semana 2 (Tiempo: 1043 min | Comunes: 2 | Misiones: 4)
  - Domina el tron de Molestiae side | Asig: WEB1 | Data: 2026-01-11 | Temps: 300 | Dif: 4 | Prog: 76 | Pes: #CC00FF | Val: 576,00 | Ratio: 1,92 | XY: (27,910)
  - Allibera els habitants de Tharholt | Asig: IO | Data: 2025-09-07 | Temps: 285 | Dif: 8 | Prog: 45 | Pes: #CC00FF | Val: 2508,00 | Ratio: 8,80 | XY: (292,986)
  - Derrota els conjuradors de yellowjacketland a la vora d’un mar embravit | Asig: Business | Data: 2026-02-18 | Temps: 298 | Dif: 9 | Prog: 90 | Pes: #4FD945 | Val: 268,20 | Ratio: 0,90 | XY: (758,327)
  - Destrueix les bèsties de jackalfurt sotmès sota el jou dels invasors | Asig: MS2 | Data: 2026-03-05 | Temps: 160 | Dif: 4 | Prog: 64 | Pes: #4FD945 | Val: 230,40 | Ratio: 1,44 | XY: (98,477)
-

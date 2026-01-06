@@ -8,54 +8,54 @@ import java.util.List;
 
 public class QuestParser {
 
-    public static List<Quest> parseFile(String filename) throws IOException {
-        List<Quest> lista = new ArrayList<>();
+    public static List<Quest> leerListaDeMisionesDesdeArchivo(String nombreArchivoDataset) throws IOException {
+        List<Quest> listaDeMisionesLeidas = new ArrayList<>();
 
-        BufferedReader br = new BufferedReader(new FileReader(filename));
+        BufferedReader lectorBufferedDelArchivo = new BufferedReader(new FileReader(nombreArchivoDataset));
 
-        // Primera línia: nombre de quests
-        String primeraLinia = br.readLine();
-        int numQuests = Integer.parseInt(primeraLinia.trim());
+        // Primera línia: nombreDeLaMision de listaDeMisiones
+        String primeraLineaConNumeroDeMisiones = lectorBufferedDelArchivo.readLine();
+        int numeroDeMisionesEnElArchivo = Integer.parseInt(primeraLineaConNumeroDeMisiones.trim());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formateadorDeFechas = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        for (int i = 0; i < numQuests; i++) {
-            String linia = br.readLine();
+        for (int i = 0; i < numeroDeMisionesEnElArchivo; i++) {
+            String lineaLeidaDelArchivo = lectorBufferedDelArchivo.readLine();
 
-            if (linia == null || linia.trim().isEmpty()) {
+            if (lineaLeidaDelArchivo == null || lineaLeidaDelArchivo.trim().isEmpty()) {
                 throw new IOException("Línia buida o null a la línia " + (i + 1));
             }
 
-            String[] parts = linia.split(";");
-            if (parts.length != 8) {
-                throw new IOException("Línia " + (i + 1) + " mal formada: esperats 8 camps, trobats " + parts.length);
+            String[] partesSeparadasPorPuntoYComa = lineaLeidaDelArchivo.split(";");
+            if (partesSeparadasPorPuntoYComa.length != 8) {
+                throw new IOException("Línia " + (i + 1) + " mal formada: esperats 8 camps, trobats " + partesSeparadasPorPuntoYComa.length);
             }
 
-            String nombre = parts[0].trim();
-            String asignatura = parts[1].trim();
-            LocalDate fechaEntrega = LocalDate.parse(parts[2].trim(), formatter);
-            int tiempoEstimado = Integer.parseInt(parts[3].trim());
-            int dificultad = Integer.parseInt(parts[4].trim());
-            int progreso = Integer.parseInt(parts[5].trim());
-            String pes = parts[6].trim();
+            String nombreDeLaMision = partesSeparadasPorPuntoYComa[0].trim();
+            String nombreDeLaAsignatura = partesSeparadasPorPuntoYComa[1].trim();
+            LocalDate fechaEntrega = LocalDate.parse(partesSeparadasPorPuntoYComa[2].trim(), formateadorDeFechas);
+            int tiempoEstimadoEnMinutos = Integer.parseInt(partesSeparadasPorPuntoYComa[3].trim());
+            int dificultad = Integer.parseInt(partesSeparadasPorPuntoYComa[4].trim());
+            int progreso = Integer.parseInt(partesSeparadasPorPuntoYComa[5].trim());
+            String codigoHexDeRareza = partesSeparadasPorPuntoYComa[6].trim();
 
-            String[] ubicacioParts = parts[7].trim().split("-");
-            if (ubicacioParts.length != 2) {
-                throw new IOException("Ubicació mal formada a la línia " + (i + 1) + ": " + parts[7]);
+            String[] partesDeLaUbicacionSeparadasPorComa = partesSeparadasPorPuntoYComa[7].trim().split("-");
+            if (partesDeLaUbicacionSeparadasPorComa.length != 2) {
+                throw new IOException("Ubicació mal formada a la línia " + (i + 1) + ": " + partesSeparadasPorPuntoYComa[7]);
             }
 
-            int x = Integer.parseInt(ubicacioParts[0].trim());
-            int y = Integer.parseInt(ubicacioParts[1].trim());
+            int coordenadaXDeLaUbicacion = Integer.parseInt(partesDeLaUbicacionSeparadasPorComa[0].trim());
+            int coordenadaYDeLaUbicacion = Integer.parseInt(partesDeLaUbicacionSeparadasPorComa[1].trim());
 
             // Creació de l'objecte
-            lista.add(new Quest(nombre, asignatura, fechaEntrega, tiempoEstimado, dificultad, progreso, pes, x, y));
+            listaDeMisionesLeidas.add(new Quest(nombreDeLaMision, nombreDeLaAsignatura, fechaEntrega, tiempoEstimadoEnMinutos, dificultad, progreso, codigoHexDeRareza, coordenadaXDeLaUbicacion, coordenadaYDeLaUbicacion));
         }
 
-        br.close();
+        lectorBufferedDelArchivo.close();
 
         // Resum final (pots comentar aquesta línia si vols silenciar completament)
-        System.out.println("Dataset carregat correctament: " + lista.size() + " quests (esperades: " + numQuests + ") des de " + filename);
+        System.out.println("Dataset carregat correctament: " + listaDeMisionesLeidas.size() + " listaDeMisiones (esperades: " + numeroDeMisionesEnElArchivo + ") des de " + nombreArchivoDataset);
 
-        return lista;
+        return listaDeMisionesLeidas;
     }
 }

@@ -3,24 +3,24 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Benchmark benchmark = new Benchmark();
+        Benchmark evaluadorDeRendimiento = new Benchmark();
 
-        File carpeta = new File("dataset_P2");
-        int limitTemps = 5000; // Valor per defecte per Problema 1
+        File carpetaDeDatasets = new File("dataset_P2");
+        int limiteDeTiempoMaximoMinutos = 5000; // Valor per defecte per Problema 1
 
         System.out.println("=====================================");
         System.out.println("   EXECUTANT PRÀCTICA 2 - AMB ELS DOS PROBLEMES   ");
         System.out.println("=====================================");
-        System.out.println("Carpeta: " + carpeta.getPath());
-        System.out.println("Limit temps Problema 1: " + limitTemps + " min");
+        System.out.println("Carpeta: " + carpetaDeDatasets.getPath());
+        System.out.println("Limit temps Problema 1: " + limiteDeTiempoMaximoMinutos + " min");
         System.out.println();
 
         // Executa Problema 1 per tots els datasets
-        System.out.println(">>> PROBLEMA 1 (Max valor) <<<");
-        benchmark.evaluarProblema1(carpeta, limitTemps);
+        System.out.println(">>> PROBLEMA 1 (Max valorTotalCalculadoDeLaMision) <<<");
+        evaluadorDeRendimiento.ejecutarBenchmarkDelProblema1(carpetaDeDatasets, limiteDeTiempoMaximoMinutos);
 
-        System.out.println("\n\n>>> PROBLEMA 2 (Min setmanes) <<<");
-        benchmark.evaluarProblema2(carpeta);
+        System.out.println("\n\n>>> PROBLEMA 2 (Min listaDeSemanas) <<<");
+        evaluadorDeRendimiento.ejecutarBenchmarkDelProblema2(carpetaDeDatasets);
 
         System.out.println("\nFinalitzat! Tots els problemes executats.");
     }

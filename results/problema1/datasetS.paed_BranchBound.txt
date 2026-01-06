@@ -1,10 +1,9 @@
-=== datasetS.paed | BranchBound | Problema 1 ===
-Missions al dataset (n): 15
-Valor total: 12156,01
-Temps total (min): 2432
-Missions seleccionades: 15
+=== Resultado Branch&Bound | datasetS.paed | Problema 1 (Maximizar valor) ===
+Valor total: 12156.01
+Tiempo total (min): 2432
+Número de misiones seleccionadas: 15
 
-Llista de missions seleccionades:
+Misiones seleccionadas (orden de la solución):
 Rescata el santuari de Dolorem sota la influència d’un encanteri | Asig: Value Chain | Data: 2025-09-18 | Temps: 59 | Dif: 9 | Prog: 12 | Pes: #FF8000 | Val: 2336,40 | Ratio: 39,60 | XY: (995,514)
 Captura la bandera el castell de Qui en ruïnes misterioses | Asig: BBDD | Data: 2026-03-14 | Temps: 39 | Dif: 8 | Prog: 14 | Pes: #FF8000 | Val: 1341,60 | Ratio: 34,40 | XY: (916,442)
 Saboteja els traïdors de Quia side | Asig: Electrònica | Data: 2025-12-27 | Temps: 183 | Dif: 9 | Prog: 44 | Pes: #CC00FF | Val: 1844,64 | Ratio: 10,08 | XY: (499,607)

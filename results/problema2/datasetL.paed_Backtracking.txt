@@ -1,16 +1,18 @@
-=== datasetL.paed | Backtracking | Problema 2 ===
-Missions al dataset (n): 25
-Nombre de setmanes: 5
-Temps total (min): 4809
+=== Resultado Backtracking | datasetL.paed | Problema 2 (Minimizar semanas) ===
+Número de semanas: 5
+Tiempo total (min): 4809
+Número total de misiones planificadas: 25
 
-Setmana 1 (Temps: 1182 min | Comunes: 0)
+Detalle por semanas:
+
+Semana 1 (Tiempo: 1182 min | Comunes: 0 | Misiones: 5)
  - Saboteja els bandits de Kordor | Asig: Estadística | Data: 2026-05-04 | Temps: 286 | Dif: 7 | Prog: 4 | Pes: #FF8000 | Val: 9609,60 | Ratio: 33,60 | XY: (912,503)
  - Descobreix les ruïnes de antview sota les profunditats del desert | Asig: BBDD | Data: 2026-05-08 | Temps: 285 | Dif: 2 | Prog: 49 | Pes: #FF8000 | Val: 1453,50 | Ratio: 5,10 | XY: (451,322)
  - Protegeix el perímetre el laberint de Facilis town que guarda secrets mil·lenaris | Asig: BBDD | Data: 2026-04-30 | Temps: 284 | Dif: 6 | Prog: 28 | Pes: #FF8000 | Val: 6134,40 | Ratio: 21,60 | XY: (159,278)
  - Escapa la fortalesa de badgerchester que amenaça els habitants | Asig: PIC1 | Data: 2025-09-28 | Temps: 279 | Dif: 2 | Prog: 72 | Pes: #FF8000 | Val: 781,20 | Ratio: 2,80 | XY: (836,92)
  - Enfronta les runes de Sylmere view on s’alcen temples desconeguts | Asig: Electrònica | Data: 2026-04-17 | Temps: 48 | Dif: 3 | Prog: 11 | Pes: #FF8000 | Val: 640,80 | Ratio: 13,35 | XY: (349,444)
 
-Setmana 2 (Temps: 1153 min | Comunes: 0)
+Semana 2 (Tiempo: 1153 min | Comunes: 0 | Misiones: 6)
  - Derrota els enemics de Nam que guarda secrets mil·lenaris | Asig: MS2 | Data: 2026-01-30 | Temps: 272 | Dif: 2 | Prog: 59 | Pes: #FF8000 | Val: 1115,20 | Ratio: 4,10 | XY: (245,335)
  - Enfronta el portal de cattleview | Asig: DIU | Data: 2025-10-02 | Temps: 235 | Dif: 8 | Prog: 69 | Pes: #FF8000 | Val: 2914,00 | Ratio: 12,40 | XY: (200,946)
  - Protegeix el perímetre el laberint de Qui | Asig: Value Chain | Data: 2025-12-26 | Temps: 228 | Dif: 2 | Prog: 20 | Pes: #FF8000 | Val: 1824,00 | Ratio: 8,00 | XY: (913,397)
@@ -18,7 +20,7 @@ Setmana 2 (Temps: 1153 min | Comunes: 0)
  - Protegeix els innocents de skunkville travessada per rius de foc | Asig: Gràfics 3D | Data: 2026-07-09 | Temps: 171 | Dif: 6 | Prog: 66 | Pes: #FF8000 | Val: 1744,20 | Ratio: 10,20 | XY: (197,875)
  - Afronta el mal el laberint de Korholt town en terres glaçades i inhòspites | Asig: IO | Data: 2026-04-22 | Temps: 44 | Dif: 7 | Prog: 98 | Pes: #FF8000 | Val: 30,80 | Ratio: 0,70 | XY: (310,865)
 
-Setmana 3 (Temps: 1192 min | Comunes: 0)
+Semana 3 (Tiempo: 1192 min | Comunes: 0 | Misiones: 7)
  - Investiga els túnels de Veniam que amenaça els habitants | Asig: SOA | Data: 2025-09-13 | Temps: 115 | Dif: 5 | Prog: 92 | Pes: #FF8000 | Val: 230,00 | Ratio: 2,00 | XY: (374,535)
  - Explora els camps de batalla de Tharvyr chester | Asig: MS2 | Data: 2026-04-21 | Temps: 112 | Dif: 6 | Prog: 84 | Pes: #FF8000 | Val: 537,60 | Ratio: 4,80 | XY: (854,295)
  - Captura la bandera el portal de Zarwyn infestat de criatures hostils | Asig: MS2 | Data: 2025-10-16 | Temps: 274 | Dif: 1 | Prog: 72 | Pes: #CC00FF | Val: 153,44 | Ratio: 0,56 | XY: (192,986)
@@ -27,7 +29,7 @@ Setmana 3 (Temps: 1192 min | Comunes: 0)
  - Tanca el portal el tron de Eos on s’alcen temples desconeguts | Asig: Estadística | Data: 2025-09-04 | Temps: 122 | Dif: 1 | Prog: 54 | Pes: #CC00FF | Val: 112,24 | Ratio: 0,92 | XY: (524,805)
  - Enfronta la fortalesa de Qui town sota les profunditats del desert | Asig: Value Chain | Data: 2026-03-12 | Temps: 87 | Dif: 4 | Prog: 23 | Pes: #CC00FF | Val: 535,92 | Ratio: 6,16 | XY: (197,278)
 
-Setmana 4 (Temps: 1175 min | Comunes: 5)
+Semana 4 (Tiempo: 1175 min | Comunes: 5 | Misiones: 6)
  - Assalta els monstres de Eldwyn | Asig: PrPr1 | Data: 2025-10-04 | Temps: 68 | Dif: 7 | Prog: 83 | Pes: #CC00FF | Val: 161,84 | Ratio: 2,38 | XY: (182,208)
  - Explora les terres oblidades de Drakvyr berg sotmès sota el jou dels invasors | Asig: Càlcul | Data: 2026-03-22 | Temps: 300 | Dif: 2 | Prog: 74 | Pes: #4FD945 | Val: 156,00 | Ratio: 0,52 | XY: (772,274)
  - Afronta el mal el castell de Mollitia burgh sota les profunditats del desert | Asig: DIU | Data: 2026-06-30 | Temps: 300 | Dif: 6 | Prog: 82 | Pes: #4FD945 | Val: 324,00 | Ratio: 1,08 | XY: (512,648)
@@ -35,6 +37,5 @@ Setmana 4 (Temps: 1175 min | Comunes: 5)
  - Protegeix el perímetre el laberint de Ut ton | Asig: BBDD | Data: 2025-10-16 | Temps: 174 | Dif: 7 | Prog: 24 | Pes: #4FD945 | Val: 925,68 | Ratio: 5,32 | XY: (261,325)
  - Captura la bandera la fortalesa de Drakgarde bury | Asig: PAED | Data: 2026-07-09 | Temps: 110 | Dif: 7 | Prog: 6 | Pes: #4FD945 | Val: 723,80 | Ratio: 6,58 | XY: (221,407)
 
-Setmana 5 (Temps: 107 min | Comunes: 1)
+Semana 5 (Tiempo: 107 min | Comunes: 1 | Misiones: 1)
  - Cerca els camps de batalla de Eldcrest ville | Asig: PIC2 | Data: 2026-05-15 | Temps: 107 | Dif: 2 | Prog: 45 | Pes: #4FD945 | Val: 117,70 | Ratio: 1,10 | XY: (246,522)
-

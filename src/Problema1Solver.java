@@ -4,58 +4,58 @@ import java.util.concurrent.*;
 
 public class Problema1Solver {
 
-    private static final int MAX_N_BACKTRACKING = 30;
-    private static final long TIMEOUT_SECONDS = 10; // 10 segons màxim per backtracking
+    private static final int MAXIMO_MISIONES_PARA_BACKTRACKING = 30;
+    private static final long TIEMPO_MAXIMO_EN_SEGUNDOS = 10; // 10 segons màxim per backtracking
 
     public static class Result {
-        List<Quest> seleccionades;
-        double valorTotal;
-        int tempsTotal;
+        List<Quest> listaDeMisionesSeleccionadas;
+        double valorTotalAcumulado;
+        int tiempoTotalMinutos;
 
-        public Result(List<Quest> sel, double val, int temps) {
-            this.seleccionades = sel;
-            this.valorTotal = val;
-            this.tempsTotal = temps;
+        public Result(List<Quest> listaDeMisionesSeleccionadas, double valorTotalAcumulado, int tiempoTotalMinutos) {
+            this.listaDeMisionesSeleccionadas = listaDeMisionesSeleccionadas;
+            this.valorTotalAcumulado = valorTotalAcumulado;
+            this.tiempoTotalMinutos = tiempoTotalMinutos;
         }
     }
 
     // GREEDY (sense canvis)
-    public static Result greedy(List<Quest> quests, int limitTemps) {
+    public static Result greedy(List<Quest> listaDeMisiones, int limiteDeTiempoMaximoMinutos) {
         // ... (el teu codi greedy, sense canvis)
-        Ordenador.sortPerRatioValor(quests);
-        List<Quest> sel = new ArrayList<>();
-        int tempsAct = 0;
-        Map<LocalDate, Integer> tempsDia = new HashMap<>();
-        Map<String, Integer> tempsAsig = new HashMap<>();
+        Ordenador.ordenarPorRatioValorSobreTiempoDescendente(listaDeMisiones);
+        List<Quest> listaDeMisionesSeleccionadas = new ArrayList<>();
+        int tiempoAcumuladoActualMinutos = 0;
+        Map<LocalDate, Integer> tiempoAcumuladoPorDia = new HashMap<>();
+        Map<String, Integer> tiempoAcumuladoPorAsignatura = new HashMap<>();
 
-        for (Quest q : quests) {
-            double tempsEf = QuestValueCalculator.tempsEfectiu(q, tempsAsig);
-            LocalDate dia = q.getDataLliurament();
-            int tempsDiaNou = tempsDia.getOrDefault(dia, 0) + q.getTempsEstim();
+        for (Quest misionActual : listaDeMisiones) {
+            double tiempoEfectivoConDescuento = QuestValueCalculator.calcularTiempoEfectivoConDescuentoPorAsignatura(misionActual, tiempoAcumuladoPorAsignatura);
+            LocalDate fechaDeEntregaMision = misionActual.getFechaDeEntrega();
+            int tiempoTotalDelDiaTrasAgregar = tiempoAcumuladoPorDia.getOrDefault(fechaDeEntregaMision, 0) + misionActual.getTiempoEstimadoEnMinutos();
 
-            if (tempsAct + tempsEf <= limitTemps && tempsDiaNou <= 480) {
-                sel.add(q);
-                tempsAct += (int) tempsEf;
-                tempsDia.put(dia, tempsDiaNou);
-                tempsAsig.merge(q.getAsignatura(), q.getTempsEstim(), Integer::sum);
+            if (tiempoAcumuladoActualMinutos + tiempoEfectivoConDescuento <= limiteDeTiempoMaximoMinutos && tiempoTotalDelDiaTrasAgregar <= 480) {
+                listaDeMisionesSeleccionadas.add(misionActual);
+                tiempoAcumuladoActualMinutos += (int) tiempoEfectivoConDescuento;
+                tiempoAcumuladoPorDia.put(fechaDeEntregaMision, tiempoTotalDelDiaTrasAgregar);
+                tiempoAcumuladoPorAsignatura.merge(misionActual.getNombreDeLaAsignatura(), misionActual.getTiempoEstimadoEnMinutos(), Integer::sum);
             }
         }
-        double valor = sel.stream().mapToDouble(Quest::getValor).sum();
-        return new Result(sel, valor, tempsAct);
+        double valorTotalCalculadoDeLaMision = listaDeMisionesSeleccionadas.stream().mapToDouble(Quest::getValorTotalCalculadoDeLaMision).sum();
+        return new Result(listaDeMisionesSeleccionadas, valorTotalCalculadoDeLaMision, tiempoAcumuladoActualMinutos);
     }
 
-    // BACKTRACKING amb timeout
+    // BACKTRACKING amb seAgotoElTiempoDeEjecucion
     private static volatile List<Quest> millorSelBT;
     private static volatile double millorValorBT;
     private static volatile boolean timeoutReached = false;
 
-    public static Result backtracking(List<Quest> quests, int limitTemps) {
-        if (quests.size() > MAX_N_BACKTRACKING) {
-            System.out.println("[Backtracking P1] Dataset massa gran (n=" + quests.size() + "). Omes.");
+    public static Result backtracking(List<Quest> listaDeMisiones, int limiteDeTiempoMaximoMinutos) {
+        if (listaDeMisiones.size() > MAXIMO_MISIONES_PARA_BACKTRACKING) {
+            System.out.println("[Backtracking P1] Dataset massa gran (n=" + listaDeMisiones.size() + "). Omes.");
             return new Result(new ArrayList<>(), 0.0, 0);
         }
 
-        Ordenador.sortPerRatioValor(quests);
+        Ordenador.ordenarPorRatioValorSobreTiempoDescendente(listaDeMisiones);
         millorSelBT = new ArrayList<>();
         millorValorBT = 0.0;
         timeoutReached = false;
@@ -63,37 +63,37 @@ public class Problema1Solver {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
             List<Quest> actual = new ArrayList<>();
-            Map<LocalDate, Integer> tempsDia = new HashMap<>();
-            Map<String, Integer> tempsAsig = new HashMap<>();
-            backtrackingRec(quests, 0, actual, 0.0, 0, tempsDia, tempsAsig, limitTemps);
+            Map<LocalDate, Integer> tiempoAcumuladoPorDia = new HashMap<>();
+            Map<String, Integer> tiempoAcumuladoPorAsignatura = new HashMap<>();
+            backtrackingRec(listaDeMisiones, 0, actual, 0.0, 0, tiempoAcumuladoPorDia, tiempoAcumuladoPorAsignatura, limiteDeTiempoMaximoMinutos);
         });
 
         try {
-            future.get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            future.get(TIEMPO_MAXIMO_EN_SEGUNDOS, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             timeoutReached = true;
-            System.out.println("[Backtracking P1] Timeout després de " + TIMEOUT_SECONDS + " segons. Millor solució parcial utilitzada.");
+            System.out.println("[Backtracking P1] Timeout després de " + TIEMPO_MAXIMO_EN_SEGUNDOS + " segons. Millor solució parcial utilitzada.");
         } catch (Exception e) {
             System.out.println("[Backtracking P1] Error: " + e.getMessage());
         } finally {
             executor.shutdownNow();
         }
 
-        int tempsTotal = 0;
+        int tiempoTotalMinutos = 0;
         if (!millorSelBT.isEmpty()) {
-            Map<String, Integer> tempsAsigFinal = Utils.getTempsPerAsig(millorSelBT);
-            for (Quest q : millorSelBT) {
-                tempsTotal += (int) QuestValueCalculator.tempsEfectiu(q, tempsAsigFinal);
+            Map<String, Integer> tempsAsigFinal = Utils.obtenerMapaTiempoAcumuladoPorAsignatura(millorSelBT);
+            for (Quest misionActual : millorSelBT) {
+                tiempoTotalMinutos += (int) QuestValueCalculator.calcularTiempoEfectivoConDescuentoPorAsignatura(misionActual, tempsAsigFinal);
             }
         }
 
-        return new Result(new ArrayList<>(millorSelBT), millorValorBT, tempsTotal);
+        return new Result(new ArrayList<>(millorSelBT), millorValorBT, tiempoTotalMinutos);
     }
 
-    private static void backtrackingRec(List<Quest> quests, int index,
+    private static void backtrackingRec(List<Quest> listaDeMisiones, int index,
                                         List<Quest> actual, double valorActual, int tempsActual,
-                                        Map<LocalDate, Integer> tempsDia,
-                                        Map<String, Integer> tempsAsig, int limitTemps) {
+                                        Map<LocalDate, Integer> tiempoAcumuladoPorDia,
+                                        Map<String, Integer> tiempoAcumuladoPorAsignatura, int limiteDeTiempoMaximoMinutos) {
         if (timeoutReached) return;
 
         if (valorActual > millorValorBT) {
@@ -101,30 +101,30 @@ public class Problema1Solver {
             millorSelBT = new ArrayList<>(actual);
         }
 
-        if (index >= quests.size()) return;
+        if (index >= listaDeMisiones.size()) return;
 
-        Quest q = quests.get(index);
+        Quest misionActual = listaDeMisiones.get(index);
 
-        backtrackingRec(quests, index + 1, actual, valorActual, tempsActual, tempsDia, tempsAsig, limitTemps);
+        backtrackingRec(listaDeMisiones, index + 1, actual, valorActual, tempsActual, tiempoAcumuladoPorDia, tiempoAcumuladoPorAsignatura, limiteDeTiempoMaximoMinutos);
 
-        double tempsEf = QuestValueCalculator.tempsEfectiu(q, tempsAsig);
-        int tempsNou = tempsActual + (int) tempsEf;
-        LocalDate dia = q.getDataLliurament();
-        int tempsDiaNou = tempsDia.getOrDefault(dia, 0) + q.getTempsEstim();
+        double tiempoEfectivoConDescuento = QuestValueCalculator.calcularTiempoEfectivoConDescuentoPorAsignatura(misionActual, tiempoAcumuladoPorAsignatura);
+        int tempsNou = tempsActual + (int) tiempoEfectivoConDescuento;
+        LocalDate fechaDeEntregaMision = misionActual.getFechaDeEntrega();
+        int tiempoTotalDelDiaTrasAgregar = tiempoAcumuladoPorDia.getOrDefault(fechaDeEntregaMision, 0) + misionActual.getTiempoEstimadoEnMinutos();
 
-        if (tempsNou <= limitTemps && tempsDiaNou <= 480) {
-            actual.add(q);
-            tempsDia.put(dia, tempsDiaNou);
-            tempsAsig.merge(q.getAsignatura(), q.getTempsEstim(), Integer::sum);
+        if (tempsNou <= limiteDeTiempoMaximoMinutos && tiempoTotalDelDiaTrasAgregar <= 480) {
+            actual.add(misionActual);
+            tiempoAcumuladoPorDia.put(fechaDeEntregaMision, tiempoTotalDelDiaTrasAgregar);
+            tiempoAcumuladoPorAsignatura.merge(misionActual.getNombreDeLaAsignatura(), misionActual.getTiempoEstimadoEnMinutos(), Integer::sum);
 
-            backtrackingRec(quests, index + 1, actual, valorActual + q.getValor(),
-                    tempsNou, tempsDia, tempsAsig, limitTemps);
+            backtrackingRec(listaDeMisiones, index + 1, actual, valorActual + misionActual.getValorTotalCalculadoDeLaMision(),
+                    tempsNou, tiempoAcumuladoPorDia, tiempoAcumuladoPorAsignatura, limiteDeTiempoMaximoMinutos);
 
             actual.remove(actual.size() - 1);
-            tempsDia.put(dia, tempsDia.get(dia) - q.getTempsEstim());
-            if (tempsDia.get(dia) <= 0) tempsDia.remove(dia);
-            tempsAsig.merge(q.getAsignatura(), -q.getTempsEstim(), Integer::sum);
-            if (tempsAsig.get(q.getAsignatura()) <= 0) tempsAsig.remove(q.getAsignatura());
+            tiempoAcumuladoPorDia.put(fechaDeEntregaMision, tiempoAcumuladoPorDia.get(fechaDeEntregaMision) - misionActual.getTiempoEstimadoEnMinutos());
+            if (tiempoAcumuladoPorDia.get(fechaDeEntregaMision) <= 0) tiempoAcumuladoPorDia.remove(fechaDeEntregaMision);
+            tiempoAcumuladoPorAsignatura.merge(misionActual.getNombreDeLaAsignatura(), -misionActual.getTiempoEstimadoEnMinutos(), Integer::sum);
+            if (tiempoAcumuladoPorAsignatura.get(misionActual.getNombreDeLaAsignatura()) <= 0) tiempoAcumuladoPorAsignatura.remove(misionActual.getNombreDeLaAsignatura());
         }
     }
 
@@ -132,23 +132,23 @@ public class Problema1Solver {
 
     // ==================== BRANCH & BOUND ====================
     private static class BBState implements Comparable<BBState> {
-        List<Quest> seleccionades;
+        List<Quest> listaDeMisionesSeleccionadas;
         double valorActual;
         int tempsActual;
         double upperBound;
         int index;
-        Map<LocalDate, Integer> tempsDia;
-        Map<String, Integer> tempsAsig;
+        Map<LocalDate, Integer> tiempoAcumuladoPorDia;
+        Map<String, Integer> tiempoAcumuladoPorAsignatura;
 
-        BBState(List<Quest> sel, double val, int temps, double bound, int idx,
-                Map<LocalDate, Integer> dia, Map<String, Integer> asig) {
-            this.seleccionades = sel;
-            this.valorActual = val;
-            this.tempsActual = temps;
+        BBState(List<Quest> listaDeMisionesSeleccionadas, double valorTotalAcumulado, int tiempoTotalMinutos, double bound, int idx,
+                Map<LocalDate, Integer> fechaDeEntregaMision, Map<String, Integer> asignaturaActual) {
+            this.listaDeMisionesSeleccionadas = listaDeMisionesSeleccionadas;
+            this.valorActual = valorTotalAcumulado;
+            this.tempsActual = tiempoTotalMinutos;
             this.upperBound = bound;
             this.index = idx;
-            this.tempsDia = dia;
-            this.tempsAsig = asig;
+            this.tiempoAcumuladoPorDia = fechaDeEntregaMision;
+            this.tiempoAcumuladoPorAsignatura = asignaturaActual;
         }
 
         @Override
@@ -157,11 +157,11 @@ public class Problema1Solver {
         }
     }
 
-    public static Result branchAndBound(List<Quest> quests, int limitTemps) {
-        Ordenador.sortPerRatioValor(quests);
+    public static Result branchAndBound(List<Quest> listaDeMisiones, int limiteDeTiempoMaximoMinutos) {
+        Ordenador.ordenarPorRatioValorSobreTiempoDescendente(listaDeMisiones);
 
         PriorityQueue<BBState> queue = new PriorityQueue<>();
-        queue.add(new BBState(new ArrayList<>(), 0.0, 0, upperBoundInicial(quests, limitTemps),
+        queue.add(new BBState(new ArrayList<>(), 0.0, 0, upperBoundInicial(listaDeMisiones, limiteDeTiempoMaximoMinutos),
                 0, new HashMap<>(), new HashMap<>()));
 
         List<Quest> millorSel = new ArrayList<>();
@@ -173,44 +173,44 @@ public class Problema1Solver {
 
             if (estat.valorActual > millorValor) {
                 millorValor = estat.valorActual;
-                millorSel = new ArrayList<>(estat.seleccionades);
+                millorSel = new ArrayList<>(estat.listaDeMisionesSeleccionadas);
                 millorTemps = estat.tempsActual;
             }
 
-            if (estat.index >= quests.size()) continue;
+            if (estat.index >= listaDeMisiones.size()) continue;
 
-            Quest q = quests.get(estat.index);
+            Quest misionActual = listaDeMisiones.get(estat.index);
 
             // NO incluir
-            double boundNo = estat.valorActual + upperBoundRestantes(quests, estat.index + 1,
-                    limitTemps - estat.tempsActual);
+            double boundNo = estat.valorActual + upperBoundRestantes(listaDeMisiones, estat.index + 1,
+                    limiteDeTiempoMaximoMinutos - estat.tempsActual);
             if (boundNo > millorValor) {
-                queue.add(new BBState(new ArrayList<>(estat.seleccionades), estat.valorActual,
+                queue.add(new BBState(new ArrayList<>(estat.listaDeMisionesSeleccionadas), estat.valorActual,
                         estat.tempsActual, boundNo, estat.index + 1,
-                        new HashMap<>(estat.tempsDia), new HashMap<>(estat.tempsAsig)));
+                        new HashMap<>(estat.tiempoAcumuladoPorDia), new HashMap<>(estat.tiempoAcumuladoPorAsignatura)));
             }
 
             // SÍ incluir
-            double tempsEf = QuestValueCalculator.tempsEfectiu(q, estat.tempsAsig);
-            int tempsNou = estat.tempsActual + (int) tempsEf;
-            LocalDate dia = q.getDataLliurament();
-            int tempsDiaNou = estat.tempsDia.getOrDefault(dia, 0) + q.getTempsEstim();
+            double tiempoEfectivoConDescuento = QuestValueCalculator.calcularTiempoEfectivoConDescuentoPorAsignatura(misionActual, estat.tiempoAcumuladoPorAsignatura);
+            int tempsNou = estat.tempsActual + (int) tiempoEfectivoConDescuento;
+            LocalDate fechaDeEntregaMision = misionActual.getFechaDeEntrega();
+            int tiempoTotalDelDiaTrasAgregar = estat.tiempoAcumuladoPorDia.getOrDefault(fechaDeEntregaMision, 0) + misionActual.getTiempoEstimadoEnMinutos();
 
-            if (tempsNou <= limitTemps && tempsDiaNou <= 480) {
-                List<Quest> novaSel = new ArrayList<>(estat.seleccionades);
-                novaSel.add(q);
+            if (tempsNou <= limiteDeTiempoMaximoMinutos && tiempoTotalDelDiaTrasAgregar <= 480) {
+                List<Quest> novaSel = new ArrayList<>(estat.listaDeMisionesSeleccionadas);
+                novaSel.add(misionActual);
 
-                Map<LocalDate, Integer> novaDia = new HashMap<>(estat.tempsDia);
-                novaDia.put(dia, tempsDiaNou);
+                Map<LocalDate, Integer> novaDia = new HashMap<>(estat.tiempoAcumuladoPorDia);
+                novaDia.put(fechaDeEntregaMision, tiempoTotalDelDiaTrasAgregar);
 
-                Map<String, Integer> novaAsig = new HashMap<>(estat.tempsAsig);
-                novaAsig.merge(q.getAsignatura(), q.getTempsEstim(), Integer::sum);
+                Map<String, Integer> novaAsig = new HashMap<>(estat.tiempoAcumuladoPorAsignatura);
+                novaAsig.merge(misionActual.getNombreDeLaAsignatura(), misionActual.getTiempoEstimadoEnMinutos(), Integer::sum);
 
-                double boundSi = estat.valorActual + q.getValor() +
-                        upperBoundRestantes(quests, estat.index + 1, limitTemps - tempsNou);
+                double boundSi = estat.valorActual + misionActual.getValorTotalCalculadoDeLaMision() +
+                        upperBoundRestantes(listaDeMisiones, estat.index + 1, limiteDeTiempoMaximoMinutos - tempsNou);
 
                 if (boundSi > millorValor) {
-                    queue.add(new BBState(novaSel, estat.valorActual + q.getValor(),
+                    queue.add(new BBState(novaSel, estat.valorActual + misionActual.getValorTotalCalculadoDeLaMision(),
                             tempsNou, boundSi, estat.index + 1, novaDia, novaAsig));
                 }
             }
@@ -219,19 +219,19 @@ public class Problema1Solver {
         return new Result(millorSel, millorValor, millorTemps);
     }
 
-    private static double upperBoundInicial(List<Quest> quests, int limitTemps) {
-        return upperBoundRestantes(quests, 0, limitTemps);
+    private static double upperBoundInicial(List<Quest> listaDeMisiones, int limiteDeTiempoMaximoMinutos) {
+        return upperBoundRestantes(listaDeMisiones, 0, limiteDeTiempoMaximoMinutos);
     }
 
-    private static double upperBoundRestantes(List<Quest> quests, int start, int capacitatRestant) {
+    private static double upperBoundRestantes(List<Quest> listaDeMisiones, int start, int capacitatRestant) {
         double bound = 0.0;
-        for (int i = start; i < quests.size() && capacitatRestant > 0; i++) {
-            Quest q = quests.get(i);
-            if (q.getTempsEstim() <= capacitatRestant) {
-                bound += q.getValor();
-                capacitatRestant -= q.getTempsEstim();
+        for (int i = start; i < listaDeMisiones.size() && capacitatRestant > 0; i++) {
+            Quest misionActual = listaDeMisiones.get(i);
+            if (misionActual.getTiempoEstimadoEnMinutos() <= capacitatRestant) {
+                bound += misionActual.getValorTotalCalculadoDeLaMision();
+                capacitatRestant -= misionActual.getTiempoEstimadoEnMinutos();
             } else {
-                bound += (capacitatRestant / (double) q.getTempsEstim()) * q.getValor();
+                bound += (capacitatRestant / (double) misionActual.getTiempoEstimadoEnMinutos()) * misionActual.getValorTotalCalculadoDeLaMision();
                 break;
             }
         }

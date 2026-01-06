@@ -1,10 +1,9 @@
-=== datasetXXXL.paed | BranchBound | Problema 1 ===
-Missions al dataset (n): 131072
-Valor total: 263153,50
-Temps total (min): 5000
-Missions seleccionades: 35
+=== Resultado Branch&Bound | datasetXXXL.paed | Problema 1 (Maximizar valor) ===
+Valor total: 263153.50
+Tiempo total (min): 5000
+Número de misiones seleccionadas: 35
 
-Llista de missions seleccionades:
+Misiones seleccionadas (orden de la solución):
 Assalta els conjuradors de Dolorem en terres glaçades i inhòspites | Asig: XAL | Data: 2025-09-27 | Temps: 225 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 11250,00 | Ratio: 50,00 | XY: (418,846)
 Captura el monestir de koalaside | Asig: Estadística | Data: 2025-09-02 | Temps: 137 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 6850,00 | Ratio: 50,00 | XY: (417,30)
 Domina el castell de Non | Asig: Gràfics 3D | Data: 2025-09-04 | Temps: 121 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 6050,00 | Ratio: 50,00 | XY: (793,978)
