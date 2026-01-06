@@ -1,0 +1,4 @@
+=== datasetXXXL.paed | Backtracking | Problema 2 ===
+Missions al dataset (n): 131072
+
+NOTA: Backtracking omès (n > 30) per evitar temps d'execució inassumibles.

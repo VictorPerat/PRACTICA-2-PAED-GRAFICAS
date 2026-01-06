@@ -1,0 +1,42 @@
+=== datasetXXXL.paed | BranchBound | Problema 1 ===
+Missions al dataset (n): 131072
+Valor total: 263153,50
+Temps total (min): 5000
+Missions seleccionades: 35
+
+Llista de missions seleccionades:
+Assalta els conjuradors de Dolorem en terres glaçades i inhòspites | Asig: XAL | Data: 2025-09-27 | Temps: 225 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 11250,00 | Ratio: 50,00 | XY: (418,846)
+Captura el monestir de koalaside | Asig: Estadística | Data: 2025-09-02 | Temps: 137 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 6850,00 | Ratio: 50,00 | XY: (417,30)
+Domina el castell de Non | Asig: Gràfics 3D | Data: 2025-09-04 | Temps: 121 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 6050,00 | Ratio: 50,00 | XY: (793,978)
+Escapa les runes de Sylheim on ressonen crits d’esperits ancestrals | Asig: PIC1 | Data: 2026-03-05 | Temps: 93 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 4650,00 | Ratio: 50,00 | XY: (337,706)
+Recupera la cripta de Valmere borough | Asig: Gràfics 3D | Data: 2026-05-05 | Temps: 51 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 2550,00 | Ratio: 50,00 | XY: (690,820)
+Escapa el tron de Tempora | Asig: XAL | Data: 2026-03-06 | Temps: 274 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 13700,00 | Ratio: 50,00 | XY: (181,852)
+Conquista el portal de salmonmouth | Asig: Value Chain | Data: 2026-04-23 | Temps: 291 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 14550,00 | Ratio: 50,00 | XY: (474,357)
+Bloqueja els bandits de sardineside que amenaça els habitants | Asig: IO | Data: 2026-05-07 | Temps: 83 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 4150,00 | Ratio: 50,00 | XY: (211,173)
+Cerca els boscos de Voluptatem ton sota les profunditats del desert | Asig: PAED | Data: 2025-09-12 | Temps: 208 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 10400,00 | Ratio: 50,00 | XY: (231,33)
+Protegeix el perímetre el portal de codshire travessada per rius de foc | Asig: XAL | Data: 2026-03-06 | Temps: 204 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 10200,00 | Ratio: 50,00 | XY: (985,469)
+Allibera els mercaders de duckport | Asig: WEB1 | Data: 2025-09-10 | Temps: 184 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 9200,00 | Ratio: 50,00 | XY: (355,507)
+Assegura els innocents de sea lionstad on ressonen crits d’esperits ancestrals | Asig: Value Chain | Data: 2026-05-21 | Temps: 58 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 2900,00 | Ratio: 50,00 | XY: (491,881)
+Explora els boscos de woodchuckton en terres glaçades i inhòspites | Asig: Value Chain | Data: 2026-05-14 | Temps: 184 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 9200,00 | Ratio: 50,00 | XY: (927,342)
+Domina la fortalesa de Myrholt | Asig: PIC1 | Data: 2026-02-08 | Temps: 194 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 9700,00 | Ratio: 50,00 | XY: (614,185)
+Repara les coves de Myrholt side | Asig: SO | Data: 2025-11-28 | Temps: 51 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 2550,00 | Ratio: 50,00 | XY: (687,893)
+Allibera la torre de vigilància de Valdor chester cobert per llegendes oblidades | Asig: PAED | Data: 2026-05-21 | Temps: 52 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 2600,00 | Ratio: 50,00 | XY: (486,879)
+Recupera l'artefacte la fortalesa de Myrwyn a la vora d’un mar embravit | Asig: Àlgebra | Data: 2025-10-13 | Temps: 143 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 7150,00 | Ratio: 50,00 | XY: (754,169)
+Afronta el mal la dimensió de ravenstad | Asig: COMPUS | Data: 2025-12-14 | Temps: 266 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 13300,00 | Ratio: 50,00 | XY: (982,929)
+Evita el cercle màgic de Laborum ville | Asig: SOA | Data: 2026-02-27 | Temps: 54 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 2700,00 | Ratio: 50,00 | XY: (557,470)
+Descobreix els carrers de platypusberg | Asig: MS2 | Data: 2025-10-17 | Temps: 80 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 4000,00 | Ratio: 50,00 | XY: (682,600)
+Assalta els traïdors de Expedita port | Asig: DIU | Data: 2026-05-25 | Temps: 177 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 8850,00 | Ratio: 50,00 | XY: (897,306)
+Allibera els habitants de Ex | Asig: SOA | Data: 2026-06-01 | Temps: 189 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 9450,00 | Ratio: 50,00 | XY: (803,449)
+Captura la bandera el portal de cattleborough | Asig: IO | Data: 2025-10-08 | Temps: 149 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 7450,00 | Ratio: 50,00 | XY: (292,495)
+Cerca les mines de Norcrest fort sota les profunditats del desert | Asig: WEB1 | Data: 2026-07-09 | Temps: 213 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 10650,00 | Ratio: 50,00 | XY: (625,719)
+Saboteja els dimonis de Myrgarde borough sota la influència d’un encanteri | Asig: ASO | Data: 2026-04-15 | Temps: 229 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 11450,00 | Ratio: 50,00 | XY: (103,861)
+Explora els carrers de Totam | Asig: PrPr1 | Data: 2026-05-05 | Temps: 127 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 6350,00 | Ratio: 50,00 | XY: (318,362)
+Domina el cercle màgic de Et | Asig: Càlcul | Data: 2025-12-04 | Temps: 223 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 11150,00 | Ratio: 50,00 | XY: (87,789)
+Defensa la ciutat de Vitae shire | Asig: PAED | Data: 2026-05-22 | Temps: 77 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 3850,00 | Ratio: 50,00 | XY: (840,742)
+Rescata el santuari de macawmouth | Asig: DIU | Data: 2025-10-11 | Temps: 255 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 12750,00 | Ratio: 50,00 | XY: (88,688)
+Investiga les muntanyes de chinchillatown al cor d’un bosc encantat | Asig: IO | Data: 2026-01-22 | Temps: 190 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 9500,00 | Ratio: 50,00 | XY: (309,291)
+Conquista el cercle màgic de mallardside | Asig: Àlgebra | Data: 2026-06-04 | Temps: 37 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 1850,00 | Ratio: 50,00 | XY: (322,431)
+Descobreix els camps de batalla de Fenholt land | Asig: DIU | Data: 2026-07-29 | Temps: 253 | Dif: 10 | Prog: 0 | Pes: #FF8000 | Val: 12650,00 | Ratio: 50,00 | XY: (925,577)
+Investiga els camps de batalla de Sylvyr on ningú s’ha atrevit a entrar | Asig: DIU | Data: 2025-10-05 | Temps: 70 | Dif: 10 | Prog: 1 | Pes: #FF8000 | Val: 3465,00 | Ratio: 49,50 | XY: (922,801)
+Afronta el mal el cercle màgic de Korlith | Asig: SO | Data: 2025-10-15 | Temps: 63 | Dif: 10 | Prog: 1 | Pes: #FF8000 | Val: 3118,50 | Ratio: 49,50 | XY: (569,601)
+Evoca la fortalesa de Et bury en ruïnes misterioses | Asig: SO | Data: 2026-03-04 | Temps: 60 | Dif: 10 | Prog: 1 | Pes: #FF8000 | Val: 2970,00 | Ratio: 49,50 | XY: (800,933)

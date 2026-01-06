@@ -1,0 +1,13 @@
+=== datasetXXS.paed | Greedy | Problema 1 ===
+Missions al dataset (n): 6
+Valor total: 4449,68
+Temps total (min): 1118
+Missions seleccionades: 6
+
+Llista de missions seleccionades:
+Assalta els enemics de Omnis ton oblidat per les cròniques antigues | Asig: Àlgebra | Data: 2025-11-27 | Temps: 231 | Dif: 7 | Prog: 72 | Pes: #FF8000 | Val: 2263,80 | Ratio: 9,80 | XY: (955,321)
+Investiga els túnels de macawville | Asig: IO | Data: 2025-12-13 | Temps: 87 | Dif: 4 | Prog: 6 | Pes: #4FD945 | Val: 327,12 | Ratio: 3,76 | XY: (559,757)
+Investiga els arxius perduts de Dicta | Asig: Gràfics 3D | Data: 2026-04-10 | Temps: 241 | Dif: 10 | Prog: 71 | Pes: #4FD945 | Val: 698,90 | Ratio: 2,90 | XY: (124,819)
+Afronta el mal el tron de Aut | Asig: WEB1 | Data: 2026-04-28 | Temps: 219 | Dif: 3 | Prog: 59 | Pes: #CC00FF | Val: 538,74 | Ratio: 2,46 | XY: (521,70)
+Recupera l'artefacte la fortalesa de duckland prohibit pels antics savis | Asig: Value Chain | Data: 2026-02-03 | Temps: 256 | Dif: 6 | Prog: 67 | Pes: #4FD945 | Val: 506,88 | Ratio: 1,98 | XY: (929,920)
+Defensa la ciutat de Tempore en ruïnes misterioses | Asig: COMPUS | Data: 2026-05-17 | Temps: 84 | Dif: 4 | Prog: 83 | Pes: #CC00FF | Val: 114,24 | Ratio: 1,36 | XY: (939,10)

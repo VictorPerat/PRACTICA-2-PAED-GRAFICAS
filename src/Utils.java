@@ -1,0 +1,65 @@
+import java.time.LocalDate;
+import java.util.*;
+
+public class Utils {
+
+
+    /** Crea un mapa amb el temps acumulat per assignatura (per descompte 10%) */
+    public static Map<String, Integer> getTempsPerAsig(List<Quest> seleccionades) {
+        Map<String, Integer> map = new HashMap<>();
+        for (Quest q : seleccionades) {
+            String asig = q.getAsignatura();
+            map.put(asig, map.getOrDefault(asig, 0) + q.getTempsEstim());
+        }
+        return map;
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    // FUNCIONS PER AL PROBLEMA 2 (Minimitzar setmanes)
+    // ──────────────────────────────────────────────────────────────
+
+    /**
+     * Lower bound millorat: considera tant el temps com el límit de 6 comunes per setmana
+     */
+    public static int lowerBoundSetmanes(List<Quest> quests) {
+        if (quests == null || quests.isEmpty()) return 0;
+
+        int totalTemps = quests.stream().mapToInt(Quest::getTempsEstim).sum();
+        int lbTemps = (int) Math.ceil(totalTemps / 1200.0);
+
+        long numComunes = quests.stream()
+                .filter(q -> q.getPes().equalsIgnoreCase("#4fd945"))
+                .count();
+        int lbComunes = (int) Math.ceil(numComunes / 6.0);
+
+        return Math.max(lbTemps, lbComunes);
+    }
+
+    /**
+     * Comprova si es pot afegir una missió a una setmana
+     * Restriccions: ≤1200 min i ≤6 missions comunes (#4fd945)
+     */
+    public static boolean setmanaOK(Quest q, List<Quest> semana) {
+        if (q == null || semana == null) return false;
+
+        // Temps
+        int tempsActual = semana.stream().mapToInt(Quest::getTempsEstim).sum();
+        if (tempsActual + q.getTempsEstim() > 1200) {
+            return false;
+        }
+
+        // Comunes: màxim 6 (per tant, si n'hi ha 6 ja, no es pot afegir una altra comuna)
+        int comunesActuals = (int) semana.stream()
+                .filter(w -> w.getPes().equalsIgnoreCase("#4fd945"))
+                .count();
+
+        boolean esComu = q.getPes().equalsIgnoreCase("#4fd945");
+        if (esComu && comunesActuals >= 6) {  // >= 6 → ja està ple, no es pot afegir
+            return false;
+        }
+
+        return true;
+    }
+
+
+}

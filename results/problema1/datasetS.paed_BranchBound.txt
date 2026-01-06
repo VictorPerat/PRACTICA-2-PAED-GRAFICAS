@@ -1,0 +1,22 @@
+=== datasetS.paed | BranchBound | Problema 1 ===
+Missions al dataset (n): 15
+Valor total: 12156,01
+Temps total (min): 2432
+Missions seleccionades: 15
+
+Llista de missions seleccionades:
+Rescata el santuari de Dolorem sota la influència d’un encanteri | Asig: Value Chain | Data: 2025-09-18 | Temps: 59 | Dif: 9 | Prog: 12 | Pes: #FF8000 | Val: 2336,40 | Ratio: 39,60 | XY: (995,514)
+Captura la bandera el castell de Qui en ruïnes misterioses | Asig: BBDD | Data: 2026-03-14 | Temps: 39 | Dif: 8 | Prog: 14 | Pes: #FF8000 | Val: 1341,60 | Ratio: 34,40 | XY: (916,442)
+Saboteja els traïdors de Quia side | Asig: Electrònica | Data: 2025-12-27 | Temps: 183 | Dif: 9 | Prog: 44 | Pes: #CC00FF | Val: 1844,64 | Ratio: 10,08 | XY: (499,607)
+Repara les terres oblidades de Autem | Asig: WEB1 | Data: 2026-05-18 | Temps: 131 | Dif: 8 | Prog: 44 | Pes: #CC00FF | Val: 1173,76 | Ratio: 8,96 | XY: (82,411)
+Evita el portal de donkeychester oblidat per les cròniques antigues | Asig: PrPr1 | Data: 2026-02-02 | Temps: 231 | Dif: 5 | Prog: 37 | Pes: #CC00FF | Val: 1455,30 | Ratio: 6,30 | XY: (871,594)
+Afronta el mal la dimensió de beetleton | Asig: WEB1 | Data: 2026-03-31 | Temps: 279 | Dif: 5 | Prog: 56 | Pes: #CC00FF | Val: 1227,60 | Ratio: 4,40 | XY: (355,410)
+Defensa la ciutat de Myrvyr bury cobert per llegendes oblidades | Asig: DPOO | Data: 2025-09-10 | Temps: 115 | Dif: 7 | Prog: 51 | Pes: #4FD945 | Val: 394,45 | Ratio: 3,43 | XY: (240,446)
+Captura la bandera el temple de Enim berg | Asig: Electrònica | Data: 2026-04-07 | Temps: 192 | Dif: 4 | Prog: 62 | Pes: #CC00FF | Val: 583,68 | Ratio: 3,04 | XY: (409,766)
+Explora les coves de sardineton en ruïnes misterioses | Asig: PIC1 | Data: 2026-07-11 | Temps: 187 | Dif: 10 | Prog: 86 | Pes: #CC00FF | Val: 523,60 | Ratio: 2,80 | XY: (120,927)
+Domina el castell de cockroachmouth plena de secrets per descobrir | Asig: DIU | Data: 2026-07-21 | Temps: 142 | Dif: 6 | Prog: 66 | Pes: #4FD945 | Val: 289,68 | Ratio: 2,04 | XY: (543,409)
+Domina el cercle màgic de dolphinport oblidat per les cròniques antigues | Asig: SOA | Data: 2025-10-22 | Temps: 172 | Dif: 2 | Prog: 81 | Pes: #FF8000 | Val: 326,80 | Ratio: 1,90 | XY: (231,43)
+Recupera el castell de oysterfort amagat dins de les muntanyes | Asig: MS | Data: 2026-04-21 | Temps: 252 | Dif: 1 | Prog: 63 | Pes: #FF8000 | Val: 466,20 | Ratio: 1,85 | XY: (582,643)
+Domina el laberint de Norheim land en terres glaçades i inhòspites | Asig: ASO | Data: 2025-10-06 | Temps: 152 | Dif: 1 | Prog: 1 | Pes: #4FD945 | Val: 150,48 | Ratio: 0,99 | XY: (809,17)
+Protegeix les caravanes de porpoisehaven | Asig: Value Chain | Data: 2026-04-09 | Temps: 208 | Dif: 3 | Prog: 95 | Pes: #4FD945 | Val: 31,20 | Ratio: 0,15 | XY: (124,363)
+Derrota les bèsties de Syllith on ningú s’ha atrevit a entrar | Asig: Electrònica | Data: 2026-07-28 | Temps: 177 | Dif: 6 | Prog: 99 | Pes: #4FD945 | Val: 10,62 | Ratio: 0,06 | XY: (498,20)
