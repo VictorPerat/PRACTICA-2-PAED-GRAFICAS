@@ -6,7 +6,7 @@ public class Main {
         Benchmark evaluadorDeRendimiento = new Benchmark();
 
         File carpetaDeDatasets = new File("dataset_P2");
-        int limiteDeTiempoMaximoMinutos = 5000; // Valor per defecte per Problema 1
+        int limiteDeTiempoMaximoMinutos = 5000;
 
         System.out.println("=====================================");
         System.out.println("   EXECUTANT PRÀCTICA 2 - AMB ELS DOS PROBLEMES   ");
@@ -15,7 +15,7 @@ public class Main {
         System.out.println("Limit temps Problema 1: " + limiteDeTiempoMaximoMinutos + " min");
         System.out.println();
 
-        // Executa Problema 1 per tots els datasets
+
         System.out.println(">>> PROBLEMA 1 (Max valorTotalCalculadoDeLaMision) <<<");
         evaluadorDeRendimiento.ejecutarBenchmarkDelProblema1(carpetaDeDatasets, limiteDeTiempoMaximoMinutos);
 

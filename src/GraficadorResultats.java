@@ -14,12 +14,12 @@ import java.util.List;
 public class GraficadorResultats {
 
     public static class DatosDelDatasetParaGraficas {
-        public String nombreDelAlgoritmo;      // "Greedy", "Backtracking", "Branch&Bound"
+        public String nombreDelAlgoritmo;
         public String nombreDelDataset;
         public int numeroDeMisiones;
         public long tiempoEjecucionEnMilisegundos;
-        public long memoriaConsumidaEnKilobytes;        // Se mantiene por si lo necesitas en futuro, pero no se usa en gráficos
-        public double calidadDeLaSolucion;       // Valor (P1) o -numeroDeSemanas (P2)
+        public long memoriaConsumidaEnKilobytes;
+        public double calidadDeLaSolucion;
         public boolean seAgotoElTiempoDeEjecucion = false;
 
         public DatosDelDatasetParaGraficas(String nombreDelAlgoritmo, String nombreDelDataset, int numeroDeMisiones,
@@ -34,9 +34,9 @@ public class GraficadorResultats {
         }
     }
 
-    private static final Color COLOR_GREEDY = new Color(46, 204, 113);   // Verde
-    private static final Color COLOR_BACKTRACK = new Color(231, 76, 60); // Rojo
-    private static final Color COLOR_BB = new Color(52, 152, 219);       // Azul
+    private static final Color COLOR_GREEDY = new Color(46, 204, 113);
+    private static final Color COLOR_BACKTRACK = new Color(231, 76, 60);
+    private static final Color COLOR_BB = new Color(52, 152, 219);
 
     public static void generarAnalisisCompletoDeResultados(Map<String, List<DatosDelDatasetParaGraficas>> dadesPerAlgoritme,
                                                String problema, String outputDir) throws IOException {
@@ -137,11 +137,11 @@ public class GraficadorResultats {
         ChartUtilities.saveChartAsPNG(new File(file), chart, 1200, 600);
     }
 
-    // Helpers
+
     private static void addSeries(XYSeriesCollection coll, List<DatosDelDatasetParaGraficas> data, String name) {
         if (data == null) return;
         XYSeries series = new XYSeries(name);
-        data.forEach(d -> series.add(d.numeroDeMisiones, Math.max(0.1, d.tiempoEjecucionEnMilisegundos))); // Evitar log(0)
+        data.forEach(d -> series.add(d.numeroDeMisiones, Math.max(0.1, d.tiempoEjecucionEnMilisegundos)));
         coll.addSeries(series);
     }
 
@@ -149,7 +149,7 @@ public class GraficadorResultats {
         if (data == null) return;
         XYSeries series = new XYSeries(name);
         data.forEach(d -> {
-            double misionActual = problema.equals("Problema1") ? d.calidadDeLaSolucion : -d.calidadDeLaSolucion; // Invertir semanas
+            double misionActual = problema.equals("Problema1") ? d.calidadDeLaSolucion : -d.calidadDeLaSolucion;
             series.add(d.numeroDeMisiones, misionActual);
         });
         coll.addSeries(series);

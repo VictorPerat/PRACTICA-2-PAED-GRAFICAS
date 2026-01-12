@@ -19,7 +19,7 @@ public class Benchmark {
             return;
         }
 
-        // Mapa para agrupar datos por nombreDelAlgoritmo
+
         Map<String, List<GraficadorResultats.DatosDelDatasetParaGraficas>> datosParaGraficasProblema1 = new HashMap<>();
         datosParaGraficasProblema1.put("Greedy", new ArrayList<>());
         datosParaGraficasProblema1.put("Backtracking", new ArrayList<>());
@@ -33,7 +33,7 @@ public class Benchmark {
             List<Quest> listaDeMisiones = QuestParser.leerListaDeMisionesDesdeArchivo(archivoDataset.getPath());
             int n = listaDeMisiones.size();
 
-            // Greedy
+
             System.out.print("Greedy... ");
             long start = System.nanoTime();
             long memIni = getMemoriaUsada();
@@ -45,7 +45,7 @@ public class Benchmark {
             datosParaGraficasProblema1.get("Greedy").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Greedy", archivoDataset.getName(), n,
                     (long) tempsG, memG / 1024, rg.valorTotalAcumulado, false));
 
-            // Backtracking
+
             System.out.print("Backtracking... ");
             start = System.nanoTime();
             memIni = getMemoriaUsada();
@@ -59,12 +59,12 @@ public class Benchmark {
             } else {
                 mostrarResultatP1(rbt, tempsBT, memBT, "Backtracking");
             }
-            // Guardamos igualmente un .txt. Si se ha omitido, el fichero dejará constancia del motivo.
+
             guardarDetalleProblema1(archivoDataset.getName(), rbt, "Backtracking", btOmitido);
             datosParaGraficasProblema1.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Backtracking", archivoDataset.getName(), n,
                     (long) tempsBT, memBT / 1024, rbt.valorTotalAcumulado, btOmitido));
 
-            // Branch & Bound
+
             System.out.print("Branch & Bound... ");
             start = System.nanoTime();
             memIni = getMemoriaUsada();
@@ -77,7 +77,7 @@ public class Benchmark {
                     (long) tempsBB, memBB / 1024, rbb.valorTotalAcumulado, false));
         }
 
-        // Generar gráficos para Problema 1
+
         try {
             GraficadorResultats.generarAnalisisCompletoDeResultados(datosParaGraficasProblema1, "Problema1", DIRECTORIO_DE_RESULTADOS + "problema1");
         } catch (Exception e) {
@@ -102,7 +102,7 @@ public class Benchmark {
             List<Quest> listaDeMisiones = QuestParser.leerListaDeMisionesDesdeArchivo(archivoDataset.getPath());
             int n = listaDeMisiones.size();
 
-            // Greedy
+
             System.out.print("Greedy... ");
             long start = System.nanoTime();
             long memIni = getMemoriaUsada();
@@ -112,9 +112,9 @@ public class Benchmark {
             mostrarResultatP2(rg, tempsG, memG, "Greedy");
             guardarDetalleProblema2(archivoDataset.getName(), rg, "Greedy", false);
             datosParaGraficasProblema2.get("Greedy").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Greedy", archivoDataset.getName(), n,
-                    (long) tempsG, memG / 1024, -rg.numeroDeSemanas, false)); // -numeroDeSemanas para que menor sea mejor
+                    (long) tempsG, memG / 1024, -rg.numeroDeSemanas, false));
 
-            // Backtracking
+
             System.out.print("Backtracking... ");
             start = System.nanoTime();
             memIni = getMemoriaUsada();
@@ -128,12 +128,12 @@ public class Benchmark {
             } else {
                 mostrarResultatP2(rbt, tempsBT, memBT, "Backtracking");
             }
-            // Guardamos igualmente un .txt. Si se ha omitido, el fichero dejará constancia del motivo.
+
             guardarDetalleProblema2(archivoDataset.getName(), rbt, "Backtracking", btOmitido);
             datosParaGraficasProblema2.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Backtracking", archivoDataset.getName(), n,
                     (long) tempsBT, memBT / 1024, -rbt.numeroDeSemanas, btOmitido));
 
-            // Branch & Bound
+
             System.out.print("Branch & Bound... ");
             start = System.nanoTime();
             memIni = getMemoriaUsada();
@@ -146,7 +146,7 @@ public class Benchmark {
                     (long) tempsBB, memBB / 1024, -rbb.numeroDeSemanas, false));
         }
 
-        // Generar gráficos para Problema 2
+
         try {
             GraficadorResultats.generarAnalisisCompletoDeResultados(datosParaGraficasProblema2, "Problema2", DIRECTORIO_DE_RESULTADOS + "problema2");
         } catch (Exception e) {
@@ -164,10 +164,6 @@ public class Benchmark {
                 algo, tiempoEjecucionEnMilisegundos, memBytes / 1024, r.numeroDeSemanas);
     }
 
-    
-    // ──────────────────────────────────────────────────────────────
-    // SALIDAS DETALLADAS A FICHEROS .txt (para no saturar la consola)
-    // ──────────────────────────────────────────────────────────────
 
     private static final int MAXIMO_MISIONES_EN_SALIDA_DETALLADA = 5000;
     private static final int MAXIMO_SEMANAS_EN_SALIDA_DETALLADA = 200;
@@ -258,7 +254,7 @@ public class Benchmark {
 
     private String sanitizarParaNombreDeArchivo(String texto) {
         if (texto == null || texto.isEmpty()) return "Algoritmo";
-        // Elimina espacios y caracteres raros (como &), dejando solo letras, números, guion y guion bajo
+
         return texto.replaceAll("[^a-zA-Z0-9_-]", "");
     }
 

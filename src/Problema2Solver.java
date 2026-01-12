@@ -21,9 +21,9 @@ public class Problema2Solver {
         }
     }
 
-    // ==================== GREEDY ====================
+
     public static Result greedy(List<Quest> listaDeMisionesDeEntrada) {
-        // Copia defensiva para no mutar la entrada
+
         List<Quest> listaDeMisiones = new ArrayList<>(listaDeMisionesDeEntrada);
         Ordenador.ordenarPorRarezaYTiempoDescendente(listaDeMisiones);
 
@@ -46,7 +46,7 @@ public class Problema2Solver {
         return new Result(listaDeSemanas);
     }
 
-    // ==================== BACKTRACKING ====================
+
     private static volatile List<List<Quest>> millorSolucioBT;
     private static volatile int millorCostBT;
     private static volatile boolean timeoutReached = false;
@@ -57,13 +57,13 @@ public class Problema2Solver {
             return greedy(listaDeMisionesDeEntrada);
         }
 
-        // Poda inicial con Greedy
+
         Result greedyResult = greedy(listaDeMisionesDeEntrada);
         millorCostBT = greedyResult.numeroDeSemanas;
         millorSolucioBT = copiaSetmanes(greedyResult.listaDeSemanas);
         System.out.println("[Backtracking P2] Poda inicial amb Greedy: " + millorCostBT + " listaDeSemanas");
 
-        // Copia y ordenación
+
         List<Quest> listaDeMisiones = new ArrayList<>(listaDeMisionesDeEntrada);
         Ordenador.ordenarPorRarezaYTiempoDescendente(listaDeMisiones);
         timeoutReached = false;
@@ -108,7 +108,7 @@ public class Problema2Solver {
 
         Quest misionActual = restants.pollFirst();
 
-        // Afegir a setmana existent
+
         for (int i = 0; i < setmanesActuals.size(); i++) {
             List<Quest> setmana = setmanesActuals.get(i);
             if (Utils.sePuedeAgregarMisionALaSemana(misionActual, setmana)) {
@@ -122,7 +122,7 @@ public class Problema2Solver {
             }
         }
 
-        // Crear nova setmana
+
         List<Quest> novaSetmana = new ArrayList<>();
         novaSetmana.add(misionActual);
         setmanesActuals.add(novaSetmana);
@@ -132,7 +132,7 @@ public class Problema2Solver {
         restants.addFirst(misionActual);
     }
 
-    // ==================== BRANCH & BOUND ====================
+
     private static class State implements Comparable<State> {
         List<List<Quest>> listaDeSemanas;
         int index;
@@ -148,7 +148,7 @@ public class Problema2Solver {
         public int compareTo(State o) {
             int cmp = Integer.compare(this.costEstimat, o.costEstimat);
             if (cmp != 0) return cmp;
-            return Integer.compare(o.index, this.index); // Tiebreaker: más progreso primero
+            return Integer.compare(o.index, this.index);
         }
     }
 
@@ -158,12 +158,12 @@ public class Problema2Solver {
             return greedy(listaDeMisionesDeEntrada);
         }
 
-        // Copia defensiva y ordenación
+
         List<Quest> listaDeMisiones = new ArrayList<>(listaDeMisionesDeEntrada);
         Ordenador.ordenarPorRarezaYTiempoDescendente(listaDeMisiones);
         int n = listaDeMisiones.size();
 
-        // Precomputación lower bound
+
         int[] cumTemps = new int[n + 1];
         int[] cumComunes = new int[n + 1];
         for (int i = n - 1; i >= 0; i--) {
@@ -171,7 +171,7 @@ public class Problema2Solver {
             cumComunes[i] = cumComunes[i + 1] + (listaDeMisiones.get(i).getCodigoHexDeRareza().equalsIgnoreCase("#4fd945") ? 1 : 0);
         }
 
-        // Solución inicial con Greedy
+
         Result greedyResult = greedy(listaDeMisionesDeEntrada);
         int millorCost = greedyResult.numeroDeSemanas;
         List<List<Quest>> millorSolucio = copiaSetmanes(greedyResult.listaDeSemanas);
@@ -203,7 +203,7 @@ public class Problema2Solver {
             Quest misionActual = listaDeMisiones.get(estat.index);
             int lbRemaining = lowerBoundPrecomp(cumTemps, cumComunes, estat.index + 1);
 
-            // Rama 1: Añadir a la mejor semanaActual existente (best-fit)
+
             List<Quest> millorSetmana = null;
             int millorEspaiLliure = Integer.MAX_VALUE;
 
@@ -220,7 +220,7 @@ public class Problema2Solver {
 
             if (millorSetmana != null) {
                 List<List<Quest>> noves = copiaSetmanes(estat.listaDeSemanas);
-                // Encontrar la copia correspondiente
+
                 int idx = estat.listaDeSemanas.indexOf(millorSetmana);
                 noves.get(idx).add(misionActual);
 
@@ -230,7 +230,7 @@ public class Problema2Solver {
                 }
             }
 
-            // Rama 2: Crear nueva semanaActual
+
             List<List<Quest>> novaSetmana = copiaSetmanes(estat.listaDeSemanas);
             List<Quest> nova = new ArrayList<>();
             nova.add(misionActual);

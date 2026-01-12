@@ -5,7 +5,7 @@ import java.util.concurrent.*;
 public class Problema1Solver {
 
     private static final int MAXIMO_MISIONES_PARA_BACKTRACKING = 30;
-    private static final long TIEMPO_MAXIMO_EN_SEGUNDOS = 10; // 10 segons màxim per backtracking
+    private static final long TIEMPO_MAXIMO_EN_SEGUNDOS = 10;
 
     public static class Result {
         List<Quest> listaDeMisionesSeleccionadas;
@@ -19,9 +19,9 @@ public class Problema1Solver {
         }
     }
 
-    // GREEDY (sense canvis)
+
     public static Result greedy(List<Quest> listaDeMisiones, int limiteDeTiempoMaximoMinutos) {
-        // ... (el teu codi greedy, sense canvis)
+
         Ordenador.ordenarPorRatioValorSobreTiempoDescendente(listaDeMisiones);
         List<Quest> listaDeMisionesSeleccionadas = new ArrayList<>();
         int tiempoAcumuladoActualMinutos = 0;
@@ -44,7 +44,7 @@ public class Problema1Solver {
         return new Result(listaDeMisionesSeleccionadas, valorTotalCalculadoDeLaMision, tiempoAcumuladoActualMinutos);
     }
 
-    // BACKTRACKING amb seAgotoElTiempoDeEjecucion
+
     private static volatile List<Quest> millorSelBT;
     private static volatile double millorValorBT;
     private static volatile boolean timeoutReached = false;
@@ -129,8 +129,6 @@ public class Problema1Solver {
     }
 
 
-
-    // ==================== BRANCH & BOUND ====================
     private static class BBState implements Comparable<BBState> {
         List<Quest> listaDeMisionesSeleccionadas;
         double valorActual;
@@ -181,7 +179,7 @@ public class Problema1Solver {
 
             Quest misionActual = listaDeMisiones.get(estat.index);
 
-            // NO incluir
+
             double boundNo = estat.valorActual + upperBoundRestantes(listaDeMisiones, estat.index + 1,
                     limiteDeTiempoMaximoMinutos - estat.tempsActual);
             if (boundNo > millorValor) {
@@ -190,7 +188,7 @@ public class Problema1Solver {
                         new HashMap<>(estat.tiempoAcumuladoPorDia), new HashMap<>(estat.tiempoAcumuladoPorAsignatura)));
             }
 
-            // SÍ incluir
+
             double tiempoEfectivoConDescuento = QuestValueCalculator.calcularTiempoEfectivoConDescuentoPorAsignatura(misionActual, estat.tiempoAcumuladoPorAsignatura);
             int tempsNou = estat.tempsActual + (int) tiempoEfectivoConDescuento;
             LocalDate fechaDeEntregaMision = misionActual.getFechaDeEntrega();

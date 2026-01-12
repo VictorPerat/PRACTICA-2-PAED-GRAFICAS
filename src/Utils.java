@@ -4,7 +4,6 @@ import java.util.*;
 public class Utils {
 
 
-    /** Crea un mapa amb el temps acumulat per assignatura (per descompte 10%) */
     public static Map<String, Integer> obtenerMapaTiempoAcumuladoPorAsignatura(List<Quest> listaDeMisionesSeleccionadas) {
         Map<String, Integer> mapaTiempoAcumuladoPorAsignatura = new HashMap<>();
         for (Quest misionActual : listaDeMisionesSeleccionadas) {
@@ -14,13 +13,7 @@ public class Utils {
         return mapaTiempoAcumuladoPorAsignatura;
     }
 
-    // ──────────────────────────────────────────────────────────────
-    // FUNCIONS PER AL PROBLEMA 2 (Minimitzar listaDeSemanas)
-    // ──────────────────────────────────────────────────────────────
 
-    /**
-     * Lower bound millorat: considera tant el temps com el límit de 6 comunes per setmana
-     */
     public static int calcularCotaInferiorDeSemanas(List<Quest> listaDeMisiones) {
         if (listaDeMisiones == null || listaDeMisiones.isEmpty()) return 0;
 
@@ -35,26 +28,23 @@ public class Utils {
         return Math.max(cotaInferiorPorTiempo, cotaInferiorPorComunes);
     }
 
-    /**
-     * Comprova si es pot afegir una missió a una setmana
-     * Restriccions: ≤1200 min i ≤6 missions comunes (#4fd945)
-     */
+
     public static boolean sePuedeAgregarMisionALaSemana(Quest misionActual, List<Quest> semana) {
         if (misionActual == null || semana == null) return false;
 
-        // Temps
+
         int tiempoAcumuladoActualEnLaSemanaMinutos = semana.stream().mapToInt(Quest::getTiempoEstimadoEnMinutos).sum();
         if (tiempoAcumuladoActualEnLaSemanaMinutos + misionActual.getTiempoEstimadoEnMinutos() > 1200) {
             return false;
         }
 
-        // Comunes: màxim 6 (per tant, si n'hi ha 6 ja, no es pot afegir una altra comuna)
+
         int numeroDeMisionesComunesEnLaSemana = (int) semana.stream()
                 .filter(w -> w.getCodigoHexDeRareza().equalsIgnoreCase("#4fd945"))
                 .count();
 
         boolean laMisionActualEsComun = misionActual.getCodigoHexDeRareza().equalsIgnoreCase("#4fd945");
-        if (laMisionActualEsComun && numeroDeMisionesComunesEnLaSemana >= 6) {  // >= 6 → ja està ple, no es pot afegir
+        if (laMisionActualEsComun && numeroDeMisionesComunesEnLaSemana >= 6) {
             return false;
         }
 

@@ -13,7 +13,7 @@ public class QuestParser {
 
         BufferedReader lectorBufferedDelArchivo = new BufferedReader(new FileReader(nombreArchivoDataset));
 
-        // Primera línia: nombreDeLaMision de listaDeMisiones
+
         String primeraLineaConNumeroDeMisiones = lectorBufferedDelArchivo.readLine();
         int numeroDeMisionesEnElArchivo = Integer.parseInt(primeraLineaConNumeroDeMisiones.trim());
 
@@ -47,13 +47,13 @@ public class QuestParser {
             int coordenadaXDeLaUbicacion = Integer.parseInt(partesDeLaUbicacionSeparadasPorComa[0].trim());
             int coordenadaYDeLaUbicacion = Integer.parseInt(partesDeLaUbicacionSeparadasPorComa[1].trim());
 
-            // Creació de l'objecte
+
             listaDeMisionesLeidas.add(new Quest(nombreDeLaMision, nombreDeLaAsignatura, fechaEntrega, tiempoEstimadoEnMinutos, dificultad, progreso, codigoHexDeRareza, coordenadaXDeLaUbicacion, coordenadaYDeLaUbicacion));
         }
 
         lectorBufferedDelArchivo.close();
 
-        // Resum final (pots comentar aquesta línia si vols silenciar completament)
+
         System.out.println("Dataset carregat correctament: " + listaDeMisionesLeidas.size() + " listaDeMisiones (esperades: " + numeroDeMisionesEnElArchivo + ") des de " + nombreArchivoDataset);
 
         return listaDeMisionesLeidas;
