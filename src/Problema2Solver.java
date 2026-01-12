@@ -3,89 +3,89 @@ import java.util.concurrent.*;
 
 public class Problema2Solver {
 
-    private static final int MAXIMO_MISIONES_PARA_BACKTRACKING = 30;
-    private static final int MAXIMO_NODOS_PARA_BRANCH_AND_BOUND = 2000;
-    private static final long TIEMPO_MAXIMO_EN_SEGUNDOS = 10;
+    private static final int MAX_N_BACKTRACKING = 30;
+    private static final int MAX_N_BB = 2000;
+    private static final long TIMEOUT_SECONDS = 10;
 
     public static class Result {
-        List<List<Quest>> listaDeSemanas;
-        int numeroDeSemanas;
-        int tiempoTotalMinutos;
+        List<List<Quest>> setmanes;
+        int numSetmanes;
+        int tempsTotal;
 
-        public Result(List<List<Quest>> listaDeSemanas) {
-            this.listaDeSemanas = listaDeSemanas;
-            this.numeroDeSemanas = listaDeSemanas.size();
-            this.tiempoTotalMinutos = listaDeSemanas.stream()
-                    .mapToInt(s -> s.stream().mapToInt(Quest::getTiempoEstimadoEnMinutos).sum())
+        public Result(List<List<Quest>> setmanes) {
+            this.setmanes = setmanes;
+            this.numSetmanes = setmanes.size();
+            this.tempsTotal = setmanes.stream()
+                    .mapToInt(s -> s.stream().mapToInt(Quest::getTempsEstim).sum())
                     .sum();
         }
     }
 
+    // ==================== GREEDY ====================
+    public static Result greedy(List<Quest> inputQuests) {
+        // Copia defensiva para no mutar la entrada
+        List<Quest> quests = new ArrayList<>(inputQuests);
+        Ordenador.sortPerRaresaTemps(quests);
 
-    public static Result greedy(List<Quest> listaDeMisionesDeEntrada) {
-
-        List<Quest> listaDeMisiones = new ArrayList<>(listaDeMisionesDeEntrada);
-        Ordenador.ordenarPorRarezaYTiempoDescendente(listaDeMisiones);
-
-        List<List<Quest>> listaDeSemanas = new ArrayList<>();
-        for (Quest misionActual : listaDeMisiones) {
-            boolean misionAsignada = false;
-            for (List<Quest> setmana : listaDeSemanas) {
-                if (Utils.sePuedeAgregarMisionALaSemana(misionActual, setmana)) {
-                    setmana.add(misionActual);
-                    misionAsignada = true;
+        List<List<Quest>> setmanes = new ArrayList<>();
+        for (Quest q : quests) {
+            boolean assignada = false;
+            for (List<Quest> setmana : setmanes) {
+                if (Utils.setmanaOK(q, setmana)) {
+                    setmana.add(q);
+                    assignada = true;
                     break;
                 }
             }
-            if (!misionAsignada) {
+            if (!assignada) {
                 List<Quest> nova = new ArrayList<>();
-                nova.add(misionActual);
-                listaDeSemanas.add(nova);
+                nova.add(q);
+                setmanes.add(nova);
             }
         }
-        return new Result(listaDeSemanas);
+        return new Result(setmanes);
     }
 
-
+    // ==================== BACKTRACKING ====================
     private static volatile List<List<Quest>> millorSolucioBT;
     private static volatile int millorCostBT;
     private static volatile boolean timeoutReached = false;
 
-    public static Result backtracking(List<Quest> listaDeMisionesDeEntrada) {
-        if (listaDeMisionesDeEntrada.size() > MAXIMO_MISIONES_PARA_BACKTRACKING) {
-            System.out.println("[Backtracking P2] Dataset massa gran (n=" + listaDeMisionesDeEntrada.size() + "). S'omet.");
-            return greedy(listaDeMisionesDeEntrada);
+    public static Result backtracking(List<Quest> inputQuests) {
+        if (inputQuests.size() > MAX_N_BACKTRACKING) {
+            System.out.println("[Backtracking P2] Dataset massa gran (n=" + inputQuests.size() + "). S'omet.");
+            return greedy(inputQuests);
         }
 
+        // Poda inicial con Greedy
+        Result greedyResult = greedy(inputQuests);
+        millorCostBT = greedyResult.numSetmanes;
+        millorSolucioBT = copiaSetmanes(greedyResult.setmanes);
+        System.out.println("[Backtracking P2] Poda inicial amb Greedy: " + millorCostBT + " setmanes");
 
-        Result greedyResult = greedy(listaDeMisionesDeEntrada);
-        millorCostBT = greedyResult.numeroDeSemanas;
-        millorSolucioBT = copiaSetmanes(greedyResult.listaDeSemanas);
-        System.out.println("[Backtracking P2] Poda inicial amb Greedy: " + millorCostBT + " listaDeSemanas");
-
-
-        List<Quest> listaDeMisiones = new ArrayList<>(listaDeMisionesDeEntrada);
-        Ordenador.ordenarPorRarezaYTiempoDescendente(listaDeMisiones);
+        // Copia y ordenación
+        List<Quest> quests = new ArrayList<>(inputQuests);
+        Ordenador.sortPerRaresaTemps(quests);
         timeoutReached = false;
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            LinkedList<Quest> restants = new LinkedList<>(listaDeMisiones);
+            LinkedList<Quest> restants = new LinkedList<>(quests);
             backtrackingRecP2(new ArrayList<>(), restants);
         });
 
         try {
-            future.get(TIEMPO_MAXIMO_EN_SEGUNDOS, TimeUnit.SECONDS);
+            future.get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             timeoutReached = true;
-            System.out.println("[Backtracking P2] Timeout de " + TIEMPO_MAXIMO_EN_SEGUNDOS + "s. S'usa la millor solució trobada.");
+            System.out.println("[Backtracking P2] Timeout de " + TIMEOUT_SECONDS + "s. S'usa la millor solució trobada.");
         } catch (Exception e) {
             System.out.println("[Backtracking P2] Error: " + e.getMessage());
         } finally {
             executor.shutdownNow();
         }
 
-        return new Result(millorSolucioBT != null ? millorSolucioBT : greedyResult.listaDeSemanas);
+        return new Result(millorSolucioBT != null ? millorSolucioBT : greedyResult.setmanes);
     }
 
     private static void backtrackingRecP2(List<List<Quest>> setmanesActuals, LinkedList<Quest> restants) {
@@ -104,42 +104,42 @@ public class Problema2Solver {
             return;
         }
 
-        if (setmanesActuals.size() + Utils.calcularCotaInferiorDeSemanas(restants) >= millorCostBT) return;
+        if (setmanesActuals.size() + Utils.lowerBoundSetmanes(restants) >= millorCostBT) return;
 
-        Quest misionActual = restants.pollFirst();
+        Quest q = restants.pollFirst();
 
-
+        // Afegir a setmana existent
         for (int i = 0; i < setmanesActuals.size(); i++) {
             List<Quest> setmana = setmanesActuals.get(i);
-            if (Utils.sePuedeAgregarMisionALaSemana(misionActual, setmana)) {
-                setmana.add(misionActual);
+            if (Utils.setmanaOK(q, setmana)) {
+                setmana.add(q);
                 backtrackingRecP2(setmanesActuals, restants);
                 setmana.remove(setmana.size() - 1);
                 if (timeoutReached) {
-                    restants.addFirst(misionActual);
+                    restants.addFirst(q);
                     return;
                 }
             }
         }
 
-
+        // Crear nova setmana
         List<Quest> novaSetmana = new ArrayList<>();
-        novaSetmana.add(misionActual);
+        novaSetmana.add(q);
         setmanesActuals.add(novaSetmana);
         backtrackingRecP2(setmanesActuals, restants);
         setmanesActuals.remove(setmanesActuals.size() - 1);
 
-        restants.addFirst(misionActual);
+        restants.addFirst(q);
     }
 
-
+    // ==================== BRANCH & BOUND ====================
     private static class State implements Comparable<State> {
-        List<List<Quest>> listaDeSemanas;
+        List<List<Quest>> setmanes;
         int index;
         int costEstimat;
 
-        State(List<List<Quest>> listaDeSemanas, int index, int estimat) {
-            this.listaDeSemanas = listaDeSemanas;
+        State(List<List<Quest>> setmanes, int index, int estimat) {
+            this.setmanes = setmanes;
             this.index = index;
             this.costEstimat = estimat;
         }
@@ -148,34 +148,34 @@ public class Problema2Solver {
         public int compareTo(State o) {
             int cmp = Integer.compare(this.costEstimat, o.costEstimat);
             if (cmp != 0) return cmp;
-            return Integer.compare(o.index, this.index);
+            return Integer.compare(o.index, this.index); // Tiebreaker: más progreso primero
         }
     }
 
-    public static Result branchAndBound(List<Quest> listaDeMisionesDeEntrada) {
-        if (listaDeMisionesDeEntrada.size() > MAXIMO_NODOS_PARA_BRANCH_AND_BOUND) {
-            System.out.println("[Branch & Bound P2] Dataset massa gran (n=" + listaDeMisionesDeEntrada.size() + "). S'usa Greedy.");
-            return greedy(listaDeMisionesDeEntrada);
+    public static Result branchAndBound(List<Quest> inputQuests) {
+        if (inputQuests.size() > MAX_N_BB) {
+            System.out.println("[Branch & Bound P2] Dataset massa gran (n=" + inputQuests.size() + "). S'usa Greedy.");
+            return greedy(inputQuests);
         }
 
+        // Copia defensiva y ordenación
+        List<Quest> quests = new ArrayList<>(inputQuests);
+        Ordenador.sortPerRaresaTemps(quests);
+        int n = quests.size();
 
-        List<Quest> listaDeMisiones = new ArrayList<>(listaDeMisionesDeEntrada);
-        Ordenador.ordenarPorRarezaYTiempoDescendente(listaDeMisiones);
-        int n = listaDeMisiones.size();
-
-
+        // Precomputación lower bound
         int[] cumTemps = new int[n + 1];
         int[] cumComunes = new int[n + 1];
         for (int i = n - 1; i >= 0; i--) {
-            cumTemps[i] = cumTemps[i + 1] + listaDeMisiones.get(i).getTiempoEstimadoEnMinutos();
-            cumComunes[i] = cumComunes[i + 1] + (listaDeMisiones.get(i).getCodigoHexDeRareza().equalsIgnoreCase("#4fd945") ? 1 : 0);
+            cumTemps[i] = cumTemps[i + 1] + quests.get(i).getTempsEstim();
+            cumComunes[i] = cumComunes[i + 1] + (quests.get(i).getPes().equalsIgnoreCase("#4fd945") ? 1 : 0);
         }
 
-
-        Result greedyResult = greedy(listaDeMisionesDeEntrada);
-        int millorCost = greedyResult.numeroDeSemanas;
-        List<List<Quest>> millorSolucio = copiaSetmanes(greedyResult.listaDeSemanas);
-        System.out.println("[B&B P2] Poda inicial amb Greedy: " + millorCost + " listaDeSemanas");
+        // Solución inicial con Greedy
+        Result greedyResult = greedy(inputQuests);
+        int millorCost = greedyResult.numSetmanes;
+        List<List<Quest>> millorSolucio = copiaSetmanes(greedyResult.setmanes);
+        System.out.println("[B&B P2] Poda inicial amb Greedy: " + millorCost + " setmanes");
 
         PriorityQueue<State> queue = new PriorityQueue<>();
         int lbInicial = lowerBoundPrecomp(cumTemps, cumComunes, 0);
@@ -189,28 +189,28 @@ public class Problema2Solver {
             State estat = queue.poll();
 
             if (estat.index >= n) {
-                int cost = estat.listaDeSemanas.size();
+                int cost = estat.setmanes.size();
                 if (cost < millorCost) {
                     millorCost = cost;
-                    millorSolucio = copiaSetmanes(estat.listaDeSemanas);
-                    System.out.println("[B&B P2] Nova millor solució: " + millorCost + " listaDeSemanas (iteració " + iteracions + ")");
+                    millorSolucio = copiaSetmanes(estat.setmanes);
+                    System.out.println("[B&B P2] Nova millor solució: " + millorCost + " setmanes (iteració " + iteracions + ")");
                 }
                 continue;
             }
 
             if (estat.costEstimat >= millorCost) continue;
 
-            Quest misionActual = listaDeMisiones.get(estat.index);
+            Quest q = quests.get(estat.index);
             int lbRemaining = lowerBoundPrecomp(cumTemps, cumComunes, estat.index + 1);
 
-
+            // Rama 1: Añadir a la mejor semana existente (best-fit)
             List<Quest> millorSetmana = null;
             int millorEspaiLliure = Integer.MAX_VALUE;
 
-            for (List<Quest> setmana : estat.listaDeSemanas) {
-                if (Utils.sePuedeAgregarMisionALaSemana(misionActual, setmana)) {
-                    int tempsActual = setmana.stream().mapToInt(Quest::getTiempoEstimadoEnMinutos).sum();
-                    int espaiLliure = 1200 - (tempsActual + misionActual.getTiempoEstimadoEnMinutos());
+            for (List<Quest> setmana : estat.setmanes) {
+                if (Utils.setmanaOK(q, setmana)) {
+                    int tempsActual = setmana.stream().mapToInt(Quest::getTempsEstim).sum();
+                    int espaiLliure = 1200 - (tempsActual + q.getTempsEstim());
                     if (espaiLliure < millorEspaiLliure) {
                         millorEspaiLliure = espaiLliure;
                         millorSetmana = setmana;
@@ -219,10 +219,10 @@ public class Problema2Solver {
             }
 
             if (millorSetmana != null) {
-                List<List<Quest>> noves = copiaSetmanes(estat.listaDeSemanas);
-
-                int idx = estat.listaDeSemanas.indexOf(millorSetmana);
-                noves.get(idx).add(misionActual);
+                List<List<Quest>> noves = copiaSetmanes(estat.setmanes);
+                // Encontrar la copia correspondiente
+                int idx = estat.setmanes.indexOf(millorSetmana);
+                noves.get(idx).add(q);
 
                 int nouEstimat = noves.size() + lbRemaining;
                 if (nouEstimat < millorCost) {
@@ -230,10 +230,10 @@ public class Problema2Solver {
                 }
             }
 
-
-            List<List<Quest>> novaSetmana = copiaSetmanes(estat.listaDeSemanas);
+            // Rama 2: Crear nueva semana
+            List<List<Quest>> novaSetmana = copiaSetmanes(estat.setmanes);
             List<Quest> nova = new ArrayList<>();
-            nova.add(misionActual);
+            nova.add(q);
             novaSetmana.add(nova);
 
             int nouEstimat = novaSetmana.size() + lbRemaining;
@@ -246,7 +246,7 @@ public class Problema2Solver {
             System.out.println("[BB P2] Límit d'iteracions assolit (" + MAX_ITER + "). Retornant millor solució trobada.");
         }
 
-        System.out.println("[BB P2] Iteracions: " + iteracions + " | Millor: " + millorCost + " listaDeSemanas");
+        System.out.println("[BB P2] Iteracions: " + iteracions + " | Millor: " + millorCost + " setmanes");
         return new Result(millorSolucio);
     }
 

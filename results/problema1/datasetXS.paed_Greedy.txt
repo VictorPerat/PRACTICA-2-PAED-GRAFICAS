@@ -1,9 +1,10 @@
-=== Resultado Greedy | datasetXS.paed | Problema 1 (Maximizar valor) ===
-Valor total: 18587.45
-Tiempo total (min): 2149
-Número de misiones seleccionadas: 10
+=== datasetXS.paed | Greedy | Problema 1 ===
+Missions al dataset (n): 10
+Valor total: 18587,45
+Temps total (min): 2149
+Missions seleccionades: 10
 
-Misiones seleccionadas (orden de la solución):
+Llista de missions seleccionades:
 Afronta el mal el castell de beeton | Asig: DIU | Data: 2025-09-16 | Temps: 188 | Dif: 9 | Prog: 2 | Pes: #FF8000 | Val: 8290,80 | Ratio: 44,10 | XY: (800,85)
 Destrueix els dimonis de mallardside | Asig: IO | Data: 2026-06-15 | Temps: 241 | Dif: 6 | Prog: 62 | Pes: #FF8000 | Val: 2747,40 | Ratio: 11,40 | XY: (571,946)
 Allibera els habitants de Tharholt | Asig: IO | Data: 2025-09-07 | Temps: 285 | Dif: 8 | Prog: 45 | Pes: #CC00FF | Val: 2508,00 | Ratio: 8,80 | XY: (292,986)

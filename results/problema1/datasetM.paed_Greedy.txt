@@ -1,9 +1,10 @@
-=== Resultado Greedy | datasetM.paed | Problema 1 (Maximizar valor) ===
-Valor total: 26426.94
-Tiempo total (min): 3559
-Número de misiones seleccionadas: 20
+=== datasetM.paed | Greedy | Problema 1 ===
+Missions al dataset (n): 20
+Valor total: 26426,94
+Temps total (min): 3559
+Missions seleccionades: 20
 
-Misiones seleccionadas (orden de la solución):
+Llista de missions seleccionades:
 Saboteja els enemics de Fenwyn controlat per bandes de mercenaris | Asig: IO | Data: 2026-06-22 | Temps: 171 | Dif: 6 | Prog: 6 | Pes: #FF8000 | Val: 4822,20 | Ratio: 28,20 | XY: (488,544)
 Bloqueja els saquejadors de Tenetur | Asig: PROG | Data: 2026-01-31 | Temps: 234 | Dif: 7 | Prog: 31 | Pes: #FF8000 | Val: 5651,10 | Ratio: 24,15 | XY: (299,462)
 Repara les muntanyes de waspbury custodiat per dracs llegendaris | Asig: MS | Data: 2026-04-30 | Temps: 287 | Dif: 9 | Prog: 38 | Pes: #CC00FF | Val: 3202,92 | Ratio: 11,16 | XY: (161,656)

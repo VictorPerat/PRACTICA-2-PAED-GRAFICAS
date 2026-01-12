@@ -4,47 +4,43 @@ import java.util.*;
 public class Utils {
 
 
-    public static Map<String, Integer> obtenerMapaTiempoAcumuladoPorAsignatura(List<Quest> listaDeMisionesSeleccionadas) {
-        Map<String, Integer> mapaTiempoAcumuladoPorAsignatura = new HashMap<>();
-        for (Quest misionActual : listaDeMisionesSeleccionadas) {
-            String asignaturaActual = misionActual.getNombreDeLaAsignatura();
-            mapaTiempoAcumuladoPorAsignatura.put(asignaturaActual, mapaTiempoAcumuladoPorAsignatura.getOrDefault(asignaturaActual, 0) + misionActual.getTiempoEstimadoEnMinutos());
+    public static Map<String, Integer> getTempsPerAsig(List<Quest> seleccionades) {
+        Map<String, Integer> map = new HashMap<>();
+        for (Quest q : seleccionades) {
+            String asig = q.getAsignatura();
+            map.put(asig, map.getOrDefault(asig, 0) + q.getTempsEstim());
         }
-        return mapaTiempoAcumuladoPorAsignatura;
+        return map;
     }
 
+    public static int lowerBoundSetmanes(List<Quest> quests) {
+        if (quests == null || quests.isEmpty()) return 0;
 
-    public static int calcularCotaInferiorDeSemanas(List<Quest> listaDeMisiones) {
-        if (listaDeMisiones == null || listaDeMisiones.isEmpty()) return 0;
+        int totalTemps = quests.stream().mapToInt(Quest::getTempsEstim).sum();
+        int lbTemps = (int) Math.ceil(totalTemps / 1200.0);
 
-        int tiempoTotalDeLaSemanaMinutos = listaDeMisiones.stream().mapToInt(Quest::getTiempoEstimadoEnMinutos).sum();
-        int cotaInferiorPorTiempo = (int) Math.ceil(tiempoTotalDeLaSemanaMinutos / 1200.0);
-
-        long numeroDeMisionesComunesTotal = listaDeMisiones.stream()
-                .filter(misionActual -> misionActual.getCodigoHexDeRareza().equalsIgnoreCase("#4fd945"))
+        long numComunes = quests.stream()
+                .filter(q -> q.getPes().equalsIgnoreCase("#4fd945"))
                 .count();
-        int cotaInferiorPorComunes = (int) Math.ceil(numeroDeMisionesComunesTotal / 6.0);
+        int lbComunes = (int) Math.ceil(numComunes / 6.0);
 
-        return Math.max(cotaInferiorPorTiempo, cotaInferiorPorComunes);
+        return Math.max(lbTemps, lbComunes);
     }
 
+    public static boolean setmanaOK(Quest q, List<Quest> semana) {
+        if (q == null || semana == null) return false;
 
-    public static boolean sePuedeAgregarMisionALaSemana(Quest misionActual, List<Quest> semana) {
-        if (misionActual == null || semana == null) return false;
-
-
-        int tiempoAcumuladoActualEnLaSemanaMinutos = semana.stream().mapToInt(Quest::getTiempoEstimadoEnMinutos).sum();
-        if (tiempoAcumuladoActualEnLaSemanaMinutos + misionActual.getTiempoEstimadoEnMinutos() > 1200) {
+        int tempsActual = semana.stream().mapToInt(Quest::getTempsEstim).sum();
+        if (tempsActual + q.getTempsEstim() > 1200) {
             return false;
         }
 
-
-        int numeroDeMisionesComunesEnLaSemana = (int) semana.stream()
-                .filter(w -> w.getCodigoHexDeRareza().equalsIgnoreCase("#4fd945"))
+        int comunesActuals = (int) semana.stream()
+                .filter(w -> w.getPes().equalsIgnoreCase("#4fd945"))
                 .count();
 
-        boolean laMisionActualEsComun = misionActual.getCodigoHexDeRareza().equalsIgnoreCase("#4fd945");
-        if (laMisionActualEsComun && numeroDeMisionesComunesEnLaSemana >= 6) {
+        boolean esComu = q.getPes().equalsIgnoreCase("#4fd945");
+        if (esComu && comunesActuals >= 6) {
             return false;
         }
 

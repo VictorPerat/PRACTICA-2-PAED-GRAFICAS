@@ -1,11 +1,9 @@
-=== Resultado Backtracking | datasetM.paed | Problema 2 (Minimizar semanas) ===
-Número de semanas: 4
-Tiempo total (min): 3711
-Número total de misiones planificadas: 20
+=== datasetM.paed | Backtracking | Problema 2 ===
+Missions al dataset (n): 20
+Nombre de setmanes: 4
+Temps total (min): 3711
 
-Detalle por semanas:
-
-Semana 1 (Tiempo: 1195 min | Comunes: 0 | Misiones: 6)
+Setmana 1 (Temps: 1195 min | Comunes: 0)
  - Afronta el mal les runes de Nisi borough | Asig: IO | Data: 2026-02-08 | Temps: 296 | Dif: 6 | Prog: 67 | Pes: #FF8000 | Val: 2930,40 | Ratio: 9,90 | XY: (386,303)
  - Afronta el mal la dimensió de Korholt berg | Asig: Àlgebra | Data: 2026-05-01 | Temps: 239 | Dif: 8 | Prog: 78 | Pes: #FF8000 | Val: 2103,20 | Ratio: 8,80 | XY: (992,138)
  - Bloqueja els saquejadors de Tenetur | Asig: PROG | Data: 2026-01-31 | Temps: 234 | Dif: 7 | Prog: 31 | Pes: #FF8000 | Val: 5651,10 | Ratio: 24,15 | XY: (299,462)
@@ -13,14 +11,14 @@ Semana 1 (Tiempo: 1195 min | Comunes: 0 | Misiones: 6)
  - Assegura els mercaders de Quasi | Asig: Gràfics 3D | Data: 2026-04-28 | Temps: 57 | Dif: 3 | Prog: 55 | Pes: #FF8000 | Val: 384,75 | Ratio: 6,75 | XY: (779,891)
  - Recupera l'artefacte el cercle màgic de Facere | Asig: IO | Data: 2026-01-22 | Temps: 198 | Dif: 6 | Prog: 68 | Pes: #CC00FF | Val: 760,32 | Ratio: 3,84 | XY: (861,566)
 
-Semana 2 (Tiempo: 1196 min | Comunes: 0 | Misiones: 5)
+Setmana 2 (Temps: 1196 min | Comunes: 0)
  - Repara les muntanyes de waspbury custodiat per dracs llegendaris | Asig: MS | Data: 2026-04-30 | Temps: 287 | Dif: 9 | Prog: 38 | Pes: #CC00FF | Val: 3202,92 | Ratio: 11,16 | XY: (161,656)
  - Assegura els mercaders de Drakcrest mouth sotmès sota el jou dels invasors | Asig: PROG | Data: 2026-01-28 | Temps: 286 | Dif: 8 | Prog: 84 | Pes: #CC00FF | Val: 732,16 | Ratio: 2,56 | XY: (668,951)
  - Captura la bandera el cercle màgic de In | Asig: Value Chain | Data: 2025-11-09 | Temps: 284 | Dif: 1 | Prog: 68 | Pes: #CC00FF | Val: 181,76 | Ratio: 0,64 | XY: (525,309)
  - Protegeix el perímetre la dimensió de locustfort sota la influència d’un encanteri | Asig: Gràfics 3D | Data: 2026-07-09 | Temps: 281 | Dif: 2 | Prog: 47 | Pes: #CC00FF | Val: 595,72 | Ratio: 2,12 | XY: (888,204)
  - Defensa els habitants de Incidunt custodiat per dracs llegendaris | Asig: SOA | Data: 2026-07-16 | Temps: 58 | Dif: 5 | Prog: 10 | Pes: #CC00FF | Val: 522,00 | Ratio: 9,00 | XY: (166,351)
 
-Semana 3 (Tiempo: 1177 min | Comunes: 3 | Misiones: 6)
+Setmana 3 (Temps: 1177 min | Comunes: 3)
  - Escapa la dimensió de Provident shire | Asig: XAL | Data: 2026-07-03 | Temps: 192 | Dif: 5 | Prog: 62 | Pes: #CC00FF | Val: 729,60 | Ratio: 3,80 | XY: (790,217)
  - Bloqueja els dimonis de Fenlith furt en ruïnes misterioses | Asig: WEB1 | Data: 2025-12-22 | Temps: 183 | Dif: 4 | Prog: 44 | Pes: #CC00FF | Val: 819,84 | Ratio: 4,48 | XY: (662,421)
  - Enfronta la cripta de Debitis en ruïnes misterioses | Asig: Value Chain | Data: 2025-12-29 | Temps: 118 | Dif: 4 | Prog: 14 | Pes: #CC00FF | Val: 811,84 | Ratio: 6,88 | XY: (535,271)
@@ -28,7 +26,8 @@ Semana 3 (Tiempo: 1177 min | Comunes: 3 | Misiones: 6)
  - Captura la bandera les catacumbes de eelland en terres glaçades i inhòspites | Asig: BBDD | Data: 2026-07-14 | Temps: 263 | Dif: 2 | Prog: 62 | Pes: #4FD945 | Val: 199,88 | Ratio: 0,76 | XY: (573,707)
  - Domina l'altar de Northas travessada per rius de foc | Asig: Estadística | Data: 2025-09-30 | Temps: 140 | Dif: 6 | Prog: 27 | Pes: #4FD945 | Val: 613,20 | Ratio: 4,38 | XY: (544,53)
 
-Semana 4 (Tiempo: 143 min | Comunes: 3 | Misiones: 3)
+Setmana 4 (Temps: 143 min | Comunes: 3)
  - Captura la fortalesa de sea lionside | Asig: Àlgebra | Data: 2025-11-28 | Temps: 53 | Dif: 3 | Prog: 100 | Pes: #4FD945 | Val: 0,00 | Ratio: 0,00 | XY: (901,875)
  - Evoca el temple de Qui | Asig: WEB1 | Data: 2026-05-05 | Temps: 50 | Dif: 5 | Prog: 18 | Pes: #4FD945 | Val: 205,00 | Ratio: 4,10 | XY: (721,115)
  - Conquista el tron de Et en terres glaçades i inhòspites | Asig: MS | Data: 2026-02-01 | Temps: 40 | Dif: 2 | Prog: 1 | Pes: #4FD945 | Val: 79,20 | Ratio: 1,98 | XY: (89,860)
+

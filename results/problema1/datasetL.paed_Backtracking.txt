@@ -1,9 +1,10 @@
-=== Resultado Backtracking | datasetL.paed | Problema 1 (Maximizar valor) ===
-Valor total: 40869.11
-Tiempo total (min): 4317
-Número de misiones seleccionadas: 25
+=== datasetL.paed | Backtracking | Problema 1 ===
+Missions al dataset (n): 25
+Valor total: 40869,11
+Temps total (min): 4317
+Missions seleccionades: 25
 
-Misiones seleccionadas (orden de la solución):
+Llista de missions seleccionades:
 Saboteja els bandits de Kordor | Asig: Estadística | Data: 2026-05-04 | Temps: 286 | Dif: 7 | Prog: 4 | Pes: #FF8000 | Val: 9609,60 | Ratio: 33,60 | XY: (912,503)
 Protegeix el perímetre el laberint de Facilis town que guarda secrets mil·lenaris | Asig: BBDD | Data: 2026-04-30 | Temps: 284 | Dif: 6 | Prog: 28 | Pes: #FF8000 | Val: 6134,40 | Ratio: 21,60 | XY: (159,278)
 Captura el monestir de dinosaurland dominat per un poder fosc | Asig: Càlcul | Data: 2026-03-13 | Temps: 230 | Dif: 10 | Prog: 7 | Pes: #CC00FF | Val: 4278,00 | Ratio: 18,60 | XY: (303,98)

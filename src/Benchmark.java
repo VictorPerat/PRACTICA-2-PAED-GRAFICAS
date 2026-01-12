@@ -3,267 +3,276 @@ import java.util.*;
 
 public class Benchmark {
 
-    private static final String DIRECTORIO_DE_RESULTADOS = "results/";
-    private static final int MAXIMO_MISIONES_PARA_BACKTRACKING = 30;
+    private static final String DIRECTORI_DE_RESULTATS = "results/";
+    private static final String DIRECTORI_RESULTATS_P1 = DIRECTORI_DE_RESULTATS + "problema1/";
+    private static final String DIRECTORI_RESULTATS_P2 = DIRECTORI_DE_RESULTATS + "problema2/";
+    private static final int MAXIM_MISSIONS_PER_BACKTRACKING = 30;
 
     static {
-        new File(DIRECTORIO_DE_RESULTADOS).mkdirs();
-        new File(DIRECTORIO_DE_RESULTADOS + "problema1/").mkdirs();
-        new File(DIRECTORIO_DE_RESULTADOS + "problema2/").mkdirs();
+        new File(DIRECTORI_DE_RESULTATS).mkdirs();
+        new File(DIRECTORI_RESULTATS_P1).mkdirs();
+        new File(DIRECTORI_RESULTATS_P2).mkdirs();
     }
 
-    public void ejecutarBenchmarkDelProblema1(File carpetaDeDatasets, int limiteDeTiempoPorDefectoMinutos) throws IOException {
-        File[] archivosDataset = carpetaDeDatasets.listFiles((dir, name) -> name.endsWith(".paed"));
-        if (archivosDataset == null || archivosDataset.length == 0) {
+    public void evaluarProblema1(File carpetaDatasets, int limitTempsDefaultMinuts) throws IOException {
+        File[] arxius = carpetaDatasets.listFiles((dir, name) -> name.endsWith(".paed"));
+        if (arxius == null || arxius.length == 0) {
             System.out.println("No s'han trobat fitxers .paed");
             return;
         }
 
+        Map<String, List<GraficadorResultats.DatosDelDatasetParaGraficas>> dadesP1 = new HashMap<>();
+        dadesP1.put("Greedy", new ArrayList<>());
+        dadesP1.put("Backtracking", new ArrayList<>());
+        dadesP1.put("Branch&Bound", new ArrayList<>());
 
-        Map<String, List<GraficadorResultats.DatosDelDatasetParaGraficas>> datosParaGraficasProblema1 = new HashMap<>();
-        datosParaGraficasProblema1.put("Greedy", new ArrayList<>());
-        datosParaGraficasProblema1.put("Backtracking", new ArrayList<>());
-        datosParaGraficasProblema1.put("Branch&Bound", new ArrayList<>());
-
-        for (File archivoDataset : archivosDataset) {
+        for (File arxiu : arxius) {
             System.out.println("\n══════════════════════════════════════════════════════════════");
-            System.out.println("📂 Dataset: " + archivoDataset.getName());
+            System.out.println("📂 Dataset: " + arxiu.getName());
             System.out.println("══════════════════════════════════════════════════════════════");
 
-            List<Quest> listaDeMisiones = QuestParser.leerListaDeMisionesDesdeArchivo(archivoDataset.getPath());
-            int n = listaDeMisiones.size();
+            List<Quest> missions = QuestParser.parseFile(arxiu.getPath());
+            int n = missions.size();
 
-
+            // Greedy
             System.out.print("Greedy... ");
             long start = System.nanoTime();
-            long memIni = getMemoriaUsada();
-            Problema1Solver.Result rg = Problema1Solver.greedy(copiarLista(listaDeMisiones), limiteDeTiempoPorDefectoMinutos);
+            long memIni = memoriaUsada();
+            Problema1Solver.Result resultatGreedy = Problema1Solver.greedy(copiar(missions), limitTempsDefaultMinuts);
             double tempsG = (System.nanoTime() - start) / 1e6;
-            long memG = getMemoriaUsada() - memIni;
-            mostrarResultatP1(rg, tempsG, memG, "Greedy");
-            guardarDetalleProblema1(archivoDataset.getName(), rg, "Greedy", false);
-            datosParaGraficasProblema1.get("Greedy").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Greedy", archivoDataset.getName(), n,
-                    (long) tempsG, memG / 1024, rg.valorTotalAcumulado, false));
+            long memG = memoriaUsada() - memIni;
+            mostrarP1(resultatGreedy, tempsG, memG, "Greedy");
+            guardarDetallP1(arxiu.getName(), "Greedy", resultatGreedy, false, n);
 
+            dadesP1.get("Greedy").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                    "Greedy", arxiu.getName(), n,
+                    (long) tempsG, Math.max(0, memG / 1024),
+                    resultatGreedy.valorTotal, false
+            ));
 
-            System.out.print("Backtracking... ");
-            start = System.nanoTime();
-            memIni = getMemoriaUsada();
-            Problema1Solver.Result rbt = Problema1Solver.backtracking(copiarLista(listaDeMisiones), limiteDeTiempoPorDefectoMinutos);
-            double tempsBT = (System.nanoTime() - start) / 1e6;
-            long memBT = getMemoriaUsada() - memIni;
+            // Backtracking
+            boolean btOmes = n > MAXIM_MISSIONS_PER_BACKTRACKING;
+            if (btOmes) {
+                System.out.println("Backtracking... [Backtracking P1] Dataset massa gran (n=" + n + "). Omes.");
+                guardarDetallP1(arxiu.getName(), "Backtracking", null, true, n);
 
-            boolean btOmitido = n > MAXIMO_MISIONES_PARA_BACKTRACKING;
-            if (btOmitido) {
-                System.out.println("Omes (n=" + n + " > " + MAXIMO_MISIONES_PARA_BACKTRACKING + ")");
+                dadesP1.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                        "Backtracking", arxiu.getName(), n,
+                        0L, 0L, 0.0, true
+                ));
             } else {
-                mostrarResultatP1(rbt, tempsBT, memBT, "Backtracking");
+                System.out.print("Backtracking... ");
+                start = System.nanoTime();
+                memIni = memoriaUsada();
+                Problema1Solver.Result resultatBT = Problema1Solver.backtracking(copiar(missions), limitTempsDefaultMinuts);
+                double tempsBT = (System.nanoTime() - start) / 1e6;
+                long memBT = memoriaUsada() - memIni;
+                mostrarP1(resultatBT, tempsBT, memBT, "Backtracking");
+                guardarDetallP1(arxiu.getName(), "Backtracking", resultatBT, false, n);
+
+                dadesP1.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                        "Backtracking", arxiu.getName(), n,
+                        (long) tempsBT, Math.max(0, memBT / 1024),
+                        resultatBT.valorTotal, false
+                ));
             }
 
-            guardarDetalleProblema1(archivoDataset.getName(), rbt, "Backtracking", btOmitido);
-            datosParaGraficasProblema1.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Backtracking", archivoDataset.getName(), n,
-                    (long) tempsBT, memBT / 1024, rbt.valorTotalAcumulado, btOmitido));
-
-
+            // Branch & Bound
             System.out.print("Branch & Bound... ");
             start = System.nanoTime();
-            memIni = getMemoriaUsada();
-            Problema1Solver.Result rbb = Problema1Solver.branchAndBound(copiarLista(listaDeMisiones), limiteDeTiempoPorDefectoMinutos);
+            memIni = memoriaUsada();
+            Problema1Solver.Result resultatBB = Problema1Solver.branchAndBound(copiar(missions), limitTempsDefaultMinuts);
             double tempsBB = (System.nanoTime() - start) / 1e6;
-            long memBB = getMemoriaUsada() - memIni;
-            mostrarResultatP1(rbb, tempsBB, memBB, "Branch & Bound");
-            guardarDetalleProblema1(archivoDataset.getName(), rbb, "Branch&Bound", false);
-            datosParaGraficasProblema1.get("Branch&Bound").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Branch&Bound", archivoDataset.getName(), n,
-                    (long) tempsBB, memBB / 1024, rbb.valorTotalAcumulado, false));
+            long memBB = memoriaUsada() - memIni;
+            mostrarP1(resultatBB, tempsBB, memBB, "Branch & Bound");
+            guardarDetallP1(arxiu.getName(), "BranchBound", resultatBB, false, n);
+
+            dadesP1.get("Branch&Bound").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                    "Branch&Bound", arxiu.getName(), n,
+                    (long) tempsBB, Math.max(0, memBB / 1024),
+                    resultatBB.valorTotal, false
+            ));
         }
 
-
         try {
-            GraficadorResultats.generarAnalisisCompletoDeResultados(datosParaGraficasProblema1, "Problema1", DIRECTORIO_DE_RESULTADOS + "problema1");
+            GraficadorResultats.generarAnalisisCompletoDeResultados(dadesP1, "Problema1", DIRECTORI_RESULTATS_P1);
         } catch (Exception e) {
             System.out.println("Error generant gràfiques P1: " + e.getMessage());
         }
     }
 
-    public void ejecutarBenchmarkDelProblema2(File carpetaDeDatasets) throws IOException {
-        File[] archivosDataset = carpetaDeDatasets.listFiles((dir, name) -> name.endsWith(".paed"));
-        if (archivosDataset == null || archivosDataset.length == 0) return;
-
-        Map<String, List<GraficadorResultats.DatosDelDatasetParaGraficas>> datosParaGraficasProblema2 = new HashMap<>();
-        datosParaGraficasProblema2.put("Greedy", new ArrayList<>());
-        datosParaGraficasProblema2.put("Backtracking", new ArrayList<>());
-        datosParaGraficasProblema2.put("Branch&Bound", new ArrayList<>());
-
-        for (File archivoDataset : archivosDataset) {
-            System.out.println("\n══════════════════════════════════════════════════════════════");
-            System.out.println("📂 Dataset: " + archivoDataset.getName());
-            System.out.println("══════════════════════════════════════════════════════════════");
-
-            List<Quest> listaDeMisiones = QuestParser.leerListaDeMisionesDesdeArchivo(archivoDataset.getPath());
-            int n = listaDeMisiones.size();
-
-
-            System.out.print("Greedy... ");
-            long start = System.nanoTime();
-            long memIni = getMemoriaUsada();
-            Problema2Solver.Result rg = Problema2Solver.greedy(copiarLista(listaDeMisiones));
-            double tempsG = (System.nanoTime() - start) / 1e6;
-            long memG = getMemoriaUsada() - memIni;
-            mostrarResultatP2(rg, tempsG, memG, "Greedy");
-            guardarDetalleProblema2(archivoDataset.getName(), rg, "Greedy", false);
-            datosParaGraficasProblema2.get("Greedy").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Greedy", archivoDataset.getName(), n,
-                    (long) tempsG, memG / 1024, -rg.numeroDeSemanas, false));
-
-
-            System.out.print("Backtracking... ");
-            start = System.nanoTime();
-            memIni = getMemoriaUsada();
-            Problema2Solver.Result rbt = Problema2Solver.backtracking(copiarLista(listaDeMisiones));
-            double tempsBT = (System.nanoTime() - start) / 1e6;
-            long memBT = getMemoriaUsada() - memIni;
-
-            boolean btOmitido = n > MAXIMO_MISIONES_PARA_BACKTRACKING;
-            if (btOmitido) {
-                System.out.println("Omes (n=" + n + " > " + MAXIMO_MISIONES_PARA_BACKTRACKING + ")");
-            } else {
-                mostrarResultatP2(rbt, tempsBT, memBT, "Backtracking");
-            }
-
-            guardarDetalleProblema2(archivoDataset.getName(), rbt, "Backtracking", btOmitido);
-            datosParaGraficasProblema2.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Backtracking", archivoDataset.getName(), n,
-                    (long) tempsBT, memBT / 1024, -rbt.numeroDeSemanas, btOmitido));
-
-
-            System.out.print("Branch & Bound... ");
-            start = System.nanoTime();
-            memIni = getMemoriaUsada();
-            Problema2Solver.Result rbb = Problema2Solver.branchAndBound(copiarLista(listaDeMisiones));
-            double tempsBB = (System.nanoTime() - start) / 1e6;
-            long memBB = getMemoriaUsada() - memIni;
-            mostrarResultatP2(rbb, tempsBB, memBB, "Branch & Bound");
-            guardarDetalleProblema2(archivoDataset.getName(), rbb, "Branch&Bound", false);
-            datosParaGraficasProblema2.get("Branch&Bound").add(new GraficadorResultats.DatosDelDatasetParaGraficas("Branch&Bound", archivoDataset.getName(), n,
-                    (long) tempsBB, memBB / 1024, -rbb.numeroDeSemanas, false));
+    public void evaluarProblema2(File carpetaDatasets) throws IOException {
+        File[] arxius = carpetaDatasets.listFiles((dir, name) -> name.endsWith(".paed"));
+        if (arxius == null || arxius.length == 0) {
+            System.out.println("No s'han trobat fitxers .paed");
+            return;
         }
 
+        Map<String, List<GraficadorResultats.DatosDelDatasetParaGraficas>> dadesP2 = new HashMap<>();
+        dadesP2.put("Greedy", new ArrayList<>());
+        dadesP2.put("Backtracking", new ArrayList<>());
+        dadesP2.put("Branch&Bound", new ArrayList<>());
+
+        for (File arxiu : arxius) {
+            System.out.println("\n══════════════════════════════════════════════════════════════");
+            System.out.println("📂 Dataset: " + arxiu.getName());
+            System.out.println("══════════════════════════════════════════════════════════════");
+
+            List<Quest> missions = QuestParser.parseFile(arxiu.getPath());
+            int n = missions.size();
+
+            // Greedy
+            System.out.print("Greedy... ");
+            long start = System.nanoTime();
+            long memIni = memoriaUsada();
+            Problema2Solver.Result resultatGreedy = Problema2Solver.greedy(copiar(missions));
+            double tempsG = (System.nanoTime() - start) / 1e6;
+            long memG = memoriaUsada() - memIni;
+            mostrarP2(resultatGreedy, tempsG, memG, "Greedy");
+            guardarDetallP2(arxiu.getName(), "Greedy", resultatGreedy, false, n);
+
+            dadesP2.get("Greedy").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                    "Greedy", arxiu.getName(), n,
+                    (long) tempsG, Math.max(0, memG / 1024),
+                    resultatGreedy.numSetmanes, false
+            ));
+
+            // Backtracking
+            boolean btOmes = n > MAXIM_MISSIONS_PER_BACKTRACKING;
+            if (btOmes) {
+                System.out.println("Backtracking... [Backtracking P2] Dataset massa gran (n=" + n + "). Omes.");
+                guardarDetallP2(arxiu.getName(), "Backtracking", null, true, n);
+
+                dadesP2.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                        "Backtracking", arxiu.getName(), n,
+                        0L, 0L, 0.0, true
+                ));
+            } else {
+                System.out.print("Backtracking... ");
+                start = System.nanoTime();
+                memIni = memoriaUsada();
+                Problema2Solver.Result resultatBT = Problema2Solver.backtracking(copiar(missions));
+                double tempsBT = (System.nanoTime() - start) / 1e6;
+                long memBT = memoriaUsada() - memIni;
+                mostrarP2(resultatBT, tempsBT, memBT, "Backtracking");
+                guardarDetallP2(arxiu.getName(), "Backtracking", resultatBT, false, n);
+
+                dadesP2.get("Backtracking").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                        "Backtracking", arxiu.getName(), n,
+                        (long) tempsBT, Math.max(0, memBT / 1024),
+                        resultatBT.numSetmanes, false
+                ));
+            }
+
+            // Branch & Bound
+            System.out.print("Branch & Bound... ");
+            start = System.nanoTime();
+            memIni = memoriaUsada();
+            Problema2Solver.Result resultatBB = Problema2Solver.branchAndBound(copiar(missions));
+            double tempsBB = (System.nanoTime() - start) / 1e6;
+            long memBB = memoriaUsada() - memIni;
+            mostrarP2(resultatBB, tempsBB, memBB, "Branch & Bound");
+            guardarDetallP2(arxiu.getName(), "BranchBound", resultatBB, false, n);
+
+            dadesP2.get("Branch&Bound").add(new GraficadorResultats.DatosDelDatasetParaGraficas(
+                    "Branch&Bound", arxiu.getName(), n,
+                    (long) tempsBB, Math.max(0, memBB / 1024),
+                    resultatBB.numSetmanes, false
+            ));
+        }
 
         try {
-            GraficadorResultats.generarAnalisisCompletoDeResultados(datosParaGraficasProblema2, "Problema2", DIRECTORIO_DE_RESULTADOS + "problema2");
+            GraficadorResultats.generarAnalisisCompletoDeResultados(dadesP2, "Problema2", DIRECTORI_RESULTATS_P2);
         } catch (Exception e) {
             System.out.println("Error generant gràfiques P2: " + e.getMessage());
         }
     }
 
-    private void mostrarResultatP1(Problema1Solver.Result r, double tiempoEjecucionEnMilisegundos, long memBytes, String algo) {
-        System.out.printf("%s → Temps: %.3f ms | Mem: %d KB | Valor: %.2f | Missions: %d\n",
-                algo, tiempoEjecucionEnMilisegundos, memBytes / 1024, r.valorTotalAcumulado, r.listaDeMisionesSeleccionadas.size());
+    private void mostrarP1(Problema1Solver.Result r, double tempsMs, long memBytes, String algorisme) {
+        System.out.printf("%s → Temps: %.3f ms | Mem: %d KB | Valor: %.2f | Missions: %d%n",
+                algorisme, tempsMs, memBytes / 1024, r.valorTotal, r.seleccionades.size());
     }
 
-    private void mostrarResultatP2(Problema2Solver.Result r, double tiempoEjecucionEnMilisegundos, long memBytes, String algo) {
-        System.out.printf("%s → Temps: %.3f ms | Mem: %d KB | Setmanes: %d\n",
-                algo, tiempoEjecucionEnMilisegundos, memBytes / 1024, r.numeroDeSemanas);
+    private void mostrarP2(Problema2Solver.Result r, double tempsMs, long memBytes, String algorisme) {
+        System.out.printf("%s → Temps: %.3f ms | Mem: %d KB | Setmanes: %d%n",
+                algorisme, tempsMs, memBytes / 1024, r.numSetmanes);
     }
 
-
-    private static final int MAXIMO_MISIONES_EN_SALIDA_DETALLADA = 5000;
-    private static final int MAXIMO_SEMANAS_EN_SALIDA_DETALLADA = 200;
-
-    private void guardarDetalleProblema1(String nombreDataset, Problema1Solver.Result resultado, String nombreAlgoritmo, boolean omitido) throws IOException {
-        String algoritmoSeguro = sanitizarParaNombreDeArchivo(nombreAlgoritmo);
-        String ruta = DIRECTORIO_DE_RESULTADOS + "problema1/" + nombreDataset + "_" + algoritmoSeguro + ".txt";
-
-        try (PrintWriter escritor = new PrintWriter(new BufferedWriter(new FileWriter(ruta)))) {
-            escritor.println("=== Resultado " + nombreAlgoritmo + " | " + nombreDataset + " | Problema 1 (Maximizar valor) ===");
-
-            if (omitido) {
-                escritor.println("NOTA: Backtracking omitido por tamaño del dataset (n > " + MAXIMO_MISIONES_PARA_BACKTRACKING + ").");
-                escritor.println("Se genera este fichero para dejar constancia del motivo.");
-                return;
-            }
-
-            escritor.printf(Locale.US, "Valor total: %.2f%n", resultado.valorTotalAcumulado);
-            escritor.println("Tiempo total (min): " + resultado.tiempoTotalMinutos);
-            escritor.println("Número de misiones seleccionadas: " + resultado.listaDeMisionesSeleccionadas.size());
-            escritor.println();
-            escritor.println("Misiones seleccionadas (orden de la solución):");
-
-            int limite = Math.min(resultado.listaDeMisionesSeleccionadas.size(), MAXIMO_MISIONES_EN_SALIDA_DETALLADA);
-            for (int i = 0; i < limite; i++) {
-                escritor.println(resultado.listaDeMisionesSeleccionadas.get(i));
-            }
-            if (resultado.listaDeMisionesSeleccionadas.size() > limite) {
-                escritor.println();
-                escritor.println("... (SALIDA TRUNCADA) Total misiones: " + resultado.listaDeMisionesSeleccionadas.size()
-                        + " | Mostradas: " + limite);
-            }
-        }
-    }
-
-    private void guardarDetalleProblema2(String nombreDataset, Problema2Solver.Result resultado, String nombreAlgoritmo, boolean omitido) throws IOException {
-        String algoritmoSeguro = sanitizarParaNombreDeArchivo(nombreAlgoritmo);
-        String ruta = DIRECTORIO_DE_RESULTADOS + "problema2/" + nombreDataset + "_" + algoritmoSeguro + ".txt";
-
-        try (PrintWriter escritor = new PrintWriter(new BufferedWriter(new FileWriter(ruta)))) {
-            escritor.println("=== Resultado " + nombreAlgoritmo + " | " + nombreDataset + " | Problema 2 (Minimizar semanas) ===");
-
-            if (omitido) {
-                escritor.println("NOTA: Backtracking omitido por tamaño del dataset (n > " + MAXIMO_MISIONES_PARA_BACKTRACKING + ").");
-                escritor.println("En su lugar, el solver devuelve una solución heurística (Greedy) para mantener viabilidad.");
-                escritor.println();
-            }
-
-            escritor.println("Número de semanas: " + resultado.numeroDeSemanas);
-            escritor.println("Tiempo total (min): " + resultado.tiempoTotalMinutos);
-
-            int totalMisionesPlanificadas = resultado.listaDeSemanas.stream().mapToInt(List::size).sum();
-            escritor.println("Número total de misiones planificadas: " + totalMisionesPlanificadas);
-            escritor.println();
-            escritor.println("Detalle por semanas:");
-
-            int semanasAMostrar = Math.min(resultado.listaDeSemanas.size(), MAXIMO_SEMANAS_EN_SALIDA_DETALLADA);
-            int misionesEscritas = 0;
-
-            for (int indiceSemana = 0; indiceSemana < semanasAMostrar; indiceSemana++) {
-                List<Quest> semana = resultado.listaDeSemanas.get(indiceSemana);
-
-                int tiempoSemana = semana.stream().mapToInt(Quest::getTiempoEstimadoEnMinutos).sum();
-                long comunes = semana.stream()
-                        .filter(m -> m.getCodigoHexDeRareza().equalsIgnoreCase("#4fd945"))
-                        .count();
-
-                escritor.printf(Locale.US, "%nSemana %d (Tiempo: %d min | Comunes: %d | Misiones: %d)%n",
-                        indiceSemana + 1, tiempoSemana, comunes, semana.size());
-
-                for (Quest mision : semana) {
-                    escritor.println(" - " + mision);
-                    misionesEscritas++;
-                    if (misionesEscritas >= MAXIMO_MISIONES_EN_SALIDA_DETALLADA) break;
-                }
-                if (misionesEscritas >= MAXIMO_MISIONES_EN_SALIDA_DETALLADA) break;
-            }
-
-            if (resultado.listaDeSemanas.size() > semanasAMostrar || totalMisionesPlanificadas > MAXIMO_MISIONES_EN_SALIDA_DETALLADA) {
-                escritor.println();
-                escritor.println("... (SALIDA TRUNCADA) Total semanas: " + resultado.listaDeSemanas.size()
-                        + " | Mostradas: " + semanasAMostrar
-                        + " | Total misiones: " + totalMisionesPlanificadas
-                        + " | Misiones listadas: " + Math.min(misionesEscritas, MAXIMO_MISIONES_EN_SALIDA_DETALLADA));
-            }
-        }
-    }
-
-    private String sanitizarParaNombreDeArchivo(String texto) {
-        if (texto == null || texto.isEmpty()) return "Algoritmo";
-
-        return texto.replaceAll("[^a-zA-Z0-9_-]", "");
-    }
-
-private long getMemoriaUsada() {
+    private long memoriaUsada() {
         Runtime rt = Runtime.getRuntime();
         return rt.totalMemory() - rt.freeMemory();
     }
 
-    private List<Quest> copiarLista(List<Quest> original) {
+    private List<Quest> copiar(List<Quest> original) {
         return new ArrayList<>(original);
+    }
+
+    private void guardarDetallP1(String nomDataset, String nomAlgorisme, Problema1Solver.Result resultat, boolean omes, int n) throws IOException {
+        String fitxer = DIRECTORI_RESULTATS_P1 + nomDataset + "_" + nomAlgorisme + ".txt";
+        try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fitxer), "UTF-8"))) {
+
+            pw.printf("=== %s | %s | Problema 1 ===%n", nomDataset, nomAlgorisme);
+            pw.printf("Missions al dataset (n): %d%n", n);
+
+            if (omes || resultat == null) {
+                pw.println();
+                pw.printf("NOTA: Backtracking omès (n > %d) per evitar temps d'execució inassumibles.%n",
+                        MAXIM_MISSIONS_PER_BACKTRACKING);
+                return;
+            }
+
+            pw.printf("Valor total: %.2f%n", resultat.valorTotal);
+            pw.printf("Temps total (min): %d%n", resultat.tempsTotal);
+            pw.printf("Missions seleccionades: %d%n", resultat.seleccionades.size());
+            pw.println();
+            pw.println("Llista de missions seleccionades:");
+            for (Quest q : resultat.seleccionades) {
+                pw.println(q.toString());
+            }
+        }
+    }
+
+    private void guardarDetallP2(String nomDataset, String nomAlgorisme, Problema2Solver.Result resultat,
+                                 boolean omes, int n) throws IOException {
+
+        String fitxer = DIRECTORI_RESULTATS_P2 + nomDataset + "_" + nomAlgorisme + ".txt";
+        try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fitxer), "UTF-8"))) {
+
+            pw.printf("=== %s | %s | Problema 2 ===%n", nomDataset, nomAlgorisme);
+            pw.printf("Missions al dataset (n): %d%n", n);
+
+            if (omes || resultat == null) {
+                pw.println();
+                pw.printf("NOTA: Backtracking omès (n > %d) per evitar temps d'execució inassumibles.%n",
+                        MAXIM_MISSIONS_PER_BACKTRACKING);
+                return;
+            }
+
+            pw.printf("Nombre de setmanes: %d%n", resultat.numSetmanes);
+            pw.printf("Temps total (min): %d%n", resultat.tempsTotal);
+            pw.println();
+
+            int setmanaNum = 1;
+            for (List<Quest> setmana : resultat.setmanes) {
+                int tempsSetmana = setmana.stream().mapToInt(Quest::getTempsEstim).sum();
+                int comunes = contarComunes(setmana);
+
+                pw.printf("Setmana %d (Temps: %d min | Comunes: %d)%n", setmanaNum++, tempsSetmana, comunes);
+                for (Quest q : setmana) {
+                    pw.println(" - " + q.toString());
+                }
+                pw.println();
+            }
+        }
+    }
+
+    private int contarComunes(List<Quest> setmana) {
+        int comunes = 0;
+        for (Quest q : setmana) {
+            if (q.getPes().equalsIgnoreCase("#4fd945")) {
+                comunes++;
+            }
+        }
+        return comunes;
     }
 }
